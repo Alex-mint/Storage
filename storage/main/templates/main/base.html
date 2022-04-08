@@ -98,14 +98,14 @@
 		                                    {% if request.user.is_authenticated %}
 
 																				<li><a href="">{% trans 'Mis reservas' %}</a></li>
-																				<li><a href="">{% trans 'SALIR' %}</a></li>
+																				<li><a href="{% url 'logout' %}">{% trans 'SALIR' %}</a></li>
 
 																						{% if request.user.is_staff %}
 																									<li><a href="">{% trans 'Todas reservas' %}</a></li>
 																						{% endif %}
 																				{% else %}
-																				<li><a href="">{% trans 'Registrarme' %}</a></li>
-																				<li><a href="">{% trans 'Acceder' %}</a></li>
+																				<li><a href="{% url 'register' %}">{% trans 'Registrarme' %}</a></li>
+																				<li><a href="{% url 'login' %}">{% trans 'Acceder' %}</a></li>
 
 																				{% endif %}
                                     </ul>

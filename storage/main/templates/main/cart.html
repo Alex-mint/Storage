@@ -21,21 +21,21 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for item in items %}
+                                            {% for item in cart.products.all %}
                                             <tr>
                                                 <td class="product-thumbnail">
                                                     <a href="product-details.html"><img src="assets/images/cart/cart-1.jpg" alt=""></a>
                                                 </td>
                                                 <td class="product-name">
-                                                    <h5><a href="product-details.html">{{item.product.name}}</a></h5>
+                                                    <h5><a href="product-details.html">{{item.item.title}}</a></h5>
                                                 </td>
-                                                <td class="product-cart-price"><span class="amount">{{item.product.price|floatformat:2}}€</span></td>
+                                                <td class="product-cart-price"><span class="amount">{{item.item.price|floatformat:2}}€</span></td>
                                                 <td class="cart-quality">
 
 
 																										<div>
 																											<img data-product="{{item.product.id}}" data-action="add" class="chg-quantity update-cart" src="{% static  'images/arrow-up.png' %}" width="20px">
-                                                      {{item.quantity}}
+                                                      {{item.qty}}
 																											<img data-product="{{item.product.id}}" data-action="remove" class="chg-quantity update-cart" src="{% static  'images/arrow-down.png' %}" width="20px">
 																										</div>
                                                 </td>
@@ -44,11 +44,11 @@
 
 																										<div class="quantity">
 																											<img data-product="{{item.product.id}}" data-action="add-period" class="chg-quantity update-cart" src="{% static  'images/arrow-up.png' %}" width="20px">
-                                                        {{item.period}}
+                                                        {{item.month}}
 																											<img data-product="{{item.product.id}}" data-action="remove-period" class="chg-quantity update-cart" src="{% static  'images/arrow-down.png' %}" width="20px">
 																										</div>
                                                 </td>
-                                                <td class="product-total"><span>{{item.get_total|floatformat:2}}€</span></td>
+                                                <td class="product-total"><span>{{item.final_price|floatformat:2}}€</span></td>
                                                 <td class="product-remove"><a href="#"><i class=" ti-trash "></i></a></td>
                                             </tr>
                                             {% endfor %}
@@ -63,7 +63,7 @@
                                                 </td>
 		                                            <td class="cart-quality"><h5>Items: <strong>{{order.get_cart_items}}</strong></h5>
                                                 </td>
-                                                <td class="product-total"><h5>Total:<strong> ${{order.get_cart_total|floatformat:2}}</strong></h5></td>
+                                                <td class="product-total"><h5>Total:<strong> ${{cart.final_price|floatformat:2}}</strong></h5></td>
                                                 <td class="product-remove"></td>
                                             </tr>
                                         </tbody>
@@ -74,11 +74,11 @@
                                 <div class="col-lg-12">
                                     <div class="cart-shiping-update-wrapper">
                                         <div class="cart-shiping-update btn-hover">
-                                            <a href="{% url 'store' %}">Continue Shopping</a>
+                                            <a href="{% url 'home' %}">Continue Shopping</a>
                                         </div>
                                         <div class="cart-clear-wrap">
                                             <div class="cart-clear btn-hover">
-                                                <a href="{% url 'checkout' %}">Checkout</a>
+                                                <a href="">Checkout</a>
                                             </div>
                                         </div>
                                     </div>
@@ -94,7 +94,7 @@
 		<div class="col-lg-12">
 			<div class="box-element">
 
-				<a  class="btn btn-outline-dark" href="{% url 'store' %}">&#x2190; Continue Shopping</a>
+				<a  class="btn btn-outline-dark" href="{% url 'home' %}">&#x2190; Continue Shopping</a>
 
 				<br>
 				<br>
@@ -103,7 +103,7 @@
 						<th><h5>Items: <strong>{{order.get_cart_items}}</strong></h5></th>
 						<th><h5>Total:<strong> ${{order.get_cart_total|floatformat:2}}</strong></h5></th>
 						<th>
-							<a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
+							<a  style="float:right; margin:5px;" class="btn btn-success" href="">Checkout</a>
 						</th>
 					</tr>
 				</table>

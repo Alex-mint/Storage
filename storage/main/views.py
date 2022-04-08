@@ -1,17 +1,44 @@
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout, login
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import ListView, CreateView
 
 from .forms import RegisterUserForm, LoginUserForm
-from .models import Item
+from .mixins import CartMixin
+from .models import Item, CartProduct
+from .utils import recalc_cart
 
 
 class Home(ListView):
     model = Item
     template_name = 'main/index.html'
     context_object_name = 'products'
+
+
+class CartView(CartMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        context = {
+            'cart': self.cart,
+        }
+        return render(request, 'main/cart.html', context)
+
+
+class AddToCartView(CartMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        item_slug = kwargs.get('slug')
+        item = Item.objects.get(slug=item_slug)
+        cart_product, created = CartProduct.objects.get_or_create(
+            user=self.cart.owner, cart=self.cart, item=item
+        )
+        if created:
+            self.cart.products.add(cart_product)
+        recalc_cart(self.cart)
+        return HttpResponseRedirect('/cart/')
 
 
 class RegisterUser(CreateView):

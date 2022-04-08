@@ -23,10 +23,10 @@ class CartProduct(models.Model):
     final_price = models.DecimalField('Precio final', max_digits=9, decimal_places=2)
 
     def __str__(self):
-        return f'{self.id} '
+        return f'{self.item.title} '
 
     def save(self, *args, **kwargs):
-        self.final_price = self.qty * self.month * self.product.price
+        self.final_price = self.qty * self.month * self.item.price
         super().save(*args, **kwargs)
 
 

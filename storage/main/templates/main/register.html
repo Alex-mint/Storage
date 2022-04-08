@@ -1,0 +1,45 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+
+        <div class="login-register-area pb-100 pt-95">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-md-12 offset-lg-2">
+                        <div class="login-register-wrapper">
+                            <div class="login-register-tab-list nav">
+                                <a class="active" data-bs-toggle="tab" href="">
+                                    <h4> {% trans 'Registrarme' %} </h4>
+                                </a>
+
+                            </div>
+                            <div class="tab-content">
+                                <div id="lg1" class="tab-pane active">
+                                    <div class="login-form-container">
+                                        <div class="login-register-form">
+		                                        <form method="post">
+                                                {% csrf_token %}
+																								<div class="form-error">{{ form.non_field_errors }}</div>
+																								  {% for f in form %}
+																								    <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}} </label>{{ f }}</p>
+																								    <div class="form-error">{{ f.errors }}</div>
+																								  {% endfor %}
+				                                          <div class="button-box btn-hover">
+                                                    <button type="submit">{% trans 'Registrarme' %}</button>
+                                                  </div>
+
+																						</form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endblock %}

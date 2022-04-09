@@ -12,10 +12,17 @@ from .models import Item, CartProduct
 from .utils import recalc_cart
 
 
-class Home(ListView):
-    model = Item
-    template_name = 'main/index.html'
-    context_object_name = 'products'
+class Home(CartMixin, View):
+    # model = Item
+    # template_name = 'main/index.html'
+    # context_object_name = 'products'
+    def get(self, request, *args, **kwargs):
+        products = Item.objects.all()
+        context = {
+            'products': products,
+            'cart': self.cart
+        }
+        return render(request, 'main/index.html', context)
 
 
 class CartView(CartMixin, View):

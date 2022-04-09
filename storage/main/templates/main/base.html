@@ -133,9 +133,15 @@
                                     <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
                                 </div>
                                 <div class="">
-                                    <a class="" href=""><i class="pe-7s-shopbag"></i>
-                                        <span class="product-count bg-black">{{cartItems}}</span>
+		                                {% if request.user.is_authenticated %}
+                                    <a class="" href="{% url 'cart' %}"><i class="pe-7s-shopbag"></i>
+                                        <span class="product-count bg-black">{{ cart.products.count }}</span>
                                     </a>
+		                                {% else %}
+		                                <a class="" href=""><i class="pe-7s-shopbag"></i>
+                                        <span class="product-count bg-black"></span>
+                                    </a>
+		                                {% endif %}
                                 </div>
                                 <div class="header-action-style d-block d-lg-none">
                                     <a class="mobile-menu-active-button" href="#"><i class="pe-7s-menu"></i></a>

@@ -80,7 +80,11 @@
 
                                                     </div>
                                                     <div class="product-action-2-wrap">
+		                                                    {% if request.user.is_authenticated %}
 				                                                <a href="{% url 'add_to_cart' slug=product.slug %}" class="product-action-btn-2"  title="Add To Cart"><i class="pe-7s-cart"></i>Add to cart</a>
+		                                                    {% else %}
+				                                                <a href="" class="product-action-btn-2"  title="Add To Cart"><i class="pe-7s-cart"></i>Add to cart</a>
+		                                                    {% endif %}
                                                     </div>
                                                 </div>
                                                 <div class="product-content">

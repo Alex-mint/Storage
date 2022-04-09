@@ -11,11 +11,11 @@
                                     <table>
                                         <thead>
                                             <tr>
-                                                <th class="width-thumbnail"></th>
                                                 <th class="width-thumbnail">Product</th>
                                                 <th class="width-price"> Price</th>
                                                 <th class="width-quantity">Quantity</th>
                                                 <th class="width-quantity">Months</th>
+		                                            <th class="width-thumbnail">Action</th>
                                                 <th class="width-subtotal">Subtotal</th>
                                                 <th class="width-remove"></th>
                                             </tr>
@@ -23,30 +23,28 @@
                                         <tbody>
                                             {% for item in cart.products.all %}
                                             <tr>
-                                                <td class="product-thumbnail">
-                                                    <a href="product-details.html"><img src="assets/images/cart/cart-1.jpg" alt=""></a>
-                                                </td>
+
                                                 <td class="product-name">
                                                     <h5><a href="product-details.html">{{item.item.title}}</a></h5>
                                                 </td>
                                                 <td class="product-cart-price"><span class="amount">{{item.item.price|floatformat:2}}€</span></td>
                                                 <td class="cart-quality">
 
+                                                   <form action="{% url 'change_qty' slug=item.item.slug %}" method="POST">
+                                                    {% csrf_token %}
 
-																										<div>
-																											<img data-product="{{item.product.id}}" data-action="add" class="chg-quantity update-cart" src="{% static  'images/arrow-up.png' %}" width="20px">
-                                                      {{item.qty}}
-																											<img data-product="{{item.product.id}}" data-action="remove" class="chg-quantity update-cart" src="{% static  'images/arrow-down.png' %}" width="20px">
-																										</div>
+                                                     <input type="number" class="form-control" name="qty" style="width: 70px;" min="1" value="{{ item.qty }}">
+		                                                  </td>
+		                                            <td class="cart-quality">
+                                                    <input type="number" class="form-control" name="month" style="width: 70px;" min="1" value="{{ item.month }}">
                                                 </td>
 		                                            <td class="cart-quality">
+                                                     <input type="submit" class="cart-clear btn-hover" value="Изменить кол-во">
+                                                    </form>
 
 
-																										<div class="quantity">
-																											<img data-product="{{item.product.id}}" data-action="add-period" class="chg-quantity update-cart" src="{% static  'images/arrow-up.png' %}" width="20px">
-                                                        {{item.month}}
-																											<img data-product="{{item.product.id}}" data-action="remove-period" class="chg-quantity update-cart" src="{% static  'images/arrow-down.png' %}" width="20px">
-																										</div>
+
+
                                                 </td>
                                                 <td class="product-total"><span>{{item.final_price|floatformat:2}}€</span></td>
                                                 <td class="product-remove"><a href="{% url 'delete_from_cart' slug=item.item.slug %}"><i class=" ti-trash "></i></a></td>
@@ -61,7 +59,7 @@
                                                 <td class="cart-quality">
 
                                                 </td>
-		                                            <td class="cart-quality"><h5>Items: <strong>{{order.get_cart_items}}</strong></h5>
+		                                            <td class="cart-quality"><h5>Items: <strong>{{cart.total_products}}</strong></h5>
                                                 </td>
                                                 <td class="product-total"><h5>Total:<strong> ${{cart.final_price|floatformat:2}}</strong></h5></td>
                                                 <td class="product-remove"></td>

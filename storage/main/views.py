@@ -62,6 +62,23 @@ class DeleteFromCartView(CartMixin, View):
         return HttpResponseRedirect('/cart/')
 
 
+class ChangeQTYView(CartMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        product_slug = kwargs.get('slug')
+        item = Item.objects.get(slug=product_slug)
+        cart_product = CartProduct.objects.get(
+            user=self.cart.owner, cart=self.cart, item=item
+        )
+        qty = int(request.POST.get('qty'))
+        month = int(request.POST.get('month'))
+        cart_product.month = month
+        cart_product.qty = qty
+        cart_product.save()
+        recalc_cart(self.cart)
+        return HttpResponseRedirect('/cart/')
+
+
 class Checkout(CartMixin, View):
 
     def get(self, request, *args, **kwargs):

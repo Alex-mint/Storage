@@ -41,6 +41,20 @@ class AddToCartView(CartMixin, View):
         return HttpResponseRedirect('/cart/')
 
 
+class DeleteFromCartView(CartMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        item_slug = kwargs.get('slug')
+        item = Item.objects.get(slug=item_slug)
+        cart_product = CartProduct.objects.get(
+            user=self.cart.owner, cart=self.cart, item=item
+        )
+        self.cart.products.remove(cart_product)
+        cart_product.delete()
+        recalc_cart(self.cart)
+        return HttpResponseRedirect('/cart/')
+
+
 class RegisterUser(CreateView):
     form_class = RegisterUserForm
     template_name = 'main/register.html'

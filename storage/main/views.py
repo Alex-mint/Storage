@@ -45,7 +45,7 @@ class AddToCartView(CartMixin, View):
         if created:
             self.cart.products.add(cart_product)
         recalc_cart(self.cart)
-        return HttpResponseRedirect('/cart/')
+        return HttpResponseRedirect('/')
 
 
 class DeleteFromCartView(CartMixin, View):
@@ -60,6 +60,17 @@ class DeleteFromCartView(CartMixin, View):
         cart_product.delete()
         recalc_cart(self.cart)
         return HttpResponseRedirect('/cart/')
+
+
+class Checkout(CartMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        #form = OrderForm(request.POST or None)
+        context = {
+            'cart': self.cart,
+            #'form': form
+        }
+        return render(request, 'main/checkout.html', context)
 
 
 class RegisterUser(CreateView):

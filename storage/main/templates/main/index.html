@@ -65,7 +65,8 @@
                                             <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200">
                                                 <div class="product-img img-zoom mb-25">
                                                     <a href="product-details.html">
-                                                        <img src="{% static 'assets/images/product/product-4.png' %}" alt="">
+                                                        <!--  <img src="{% static 'assets/images/product/product-4.png' %}" alt=""> -->
+                                                        <img src="{{product.image.url}}" alt="">
                                                     </a>
                                                     <div class="product-badge badge-top badge-right badge-pink">
                                                         <span>-10%</span>
@@ -107,12 +108,12 @@
                         <div class="row gx-0">
                             <div class="col-lg-5 col-md-5 col-12">
                                 <div class="modal-img-wrap">
-                                    <img src="{{product.imageURL}}" alt="">
+                                    <img src="{{product.image.url}}" alt="{{product.title}}">
                                 </div>
                             </div>
                             <div class="col-lg-7 col-md-7 col-12">
                                 <div class="product-details-content quickview-content">
-                                    <h2>{{product.name}}</h2>
+                                    <h2>{{product.title}}</h2>
                                     <div class="product-details-price">
                                         <span>{{product.price}}€ </span>
                                     </div>
@@ -134,19 +135,14 @@
                                             <li><a title="Purple" class="purple" href="#">purple</a></li>
                                         </ul>
                                     </div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ornare tincidunt neque vel semper. Cras placerat enim sed nisl mattis eleifend.</p>
+                                    <p>{{ product.description}}</p>
                                     <div class="product-details-action-wrap">
-                                        <div class="product-quality">
-                                            <input class="cart-plus-minus-box input-text qty text" name="qtybutton" value="1">
-                                        </div>
                                         <div class="single-product-cart btn-hover">
-                                            <a href="#">Add to cart</a>
-                                        </div>
-                                        <div class="single-product-wishlist">
-                                            <a title="Wishlist" href="#"><i class="pe-7s-like"></i></a>
-                                        </div>
-                                        <div class="single-product-compare">
-                                            <a title="Compare" href="#"><i class="pe-7s-shuffle"></i></a>
+                                            {% if request.user.is_authenticated %}
+				                                        <a href="{% url 'add_to_cart' slug=product.slug %}" class="product-action-btn-2"  title="Add To Cart"><i class="pe-7s-cart"></i>Add to cart</a>
+		                                        {% else %}
+				                                        <a href="" class="product-action-btn-2"  title="Add To Cart"><i class="pe-7s-cart"></i>Add to cart</a>
+		                                        {% endif %}
                                         </div>
                                     </div>
                                 </div>

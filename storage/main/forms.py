@@ -8,7 +8,8 @@ from django.utils.translation import gettext_lazy as _
 
 from datetime import timedelta
 
-# class AddBookingForm(forms.Form):
+
+# class OrderForm(forms.Form):
 #     first_name = forms.CharField(label='', widget=forms.TextInput(
 #         attrs={'class': 'form-field', 'placeholder': _('Nombre')}))
 #     last_name = forms.CharField(label='', widget=forms.TextInput(
@@ -22,7 +23,24 @@ from datetime import timedelta
 #                                   attrs={'cols': 42, 'rows': 4,
 #                                          'class': 'form-field',
 #                                          'placeholder': _('Comentario')})
-                              #)
+#                               )
+
+
+class OrderForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['order_date'].label = 'Дата получения заказа'
+
+    order_date = forms.DateField(
+        widget=forms.TextInput(attrs={'type': 'date'}))
+
+    class Meta:
+        model = Order
+        fields = (
+            'first_name', 'last_name', 'phone', 'address', 'buying_type',
+            'order_date', 'comment'
+        )
 
 
 class RegisterUserForm(UserCreationForm):
@@ -48,5 +66,3 @@ class LoginUserForm(AuthenticationForm):
         attrs={'class': 'form-field', 'placeholder': _('Usuario')}))
     password = forms.CharField(label='', widget=forms.PasswordInput(
         attrs={'class': 'form-field', 'placeholder': _('Contraseña')}))
-
-

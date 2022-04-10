@@ -13,6 +13,20 @@ h1,h2,h3,h4,h5,h6{
 	padding: 10px;
 }
 
+.Place-ord a {
+    background-color: #e97730;
+    display: block;
+    cursor: pointer;
+    padding: 16px 50px 17px;
+    text-transform: capitalize;
+    width: 100%;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    z-index: 1;
+}
+
 .thumbnail{
 	width: 100%;
 	height: 200px;

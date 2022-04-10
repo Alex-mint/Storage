@@ -1,21 +1,19 @@
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout, login
+from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import ListView, CreateView
 
-from .forms import RegisterUserForm, LoginUserForm
+from .forms import RegisterUserForm, LoginUserForm, OrderForm
 from .mixins import CartMixin
-from .models import Item, CartProduct
+from .models import Item, CartProduct, Customer
 from .utils import recalc_cart
 
 
 class Home(CartMixin, View):
-    # model = Item
-    # template_name = 'main/index.html'
-    # context_object_name = 'products'
     def get(self, request, *args, **kwargs):
         products = Item.objects.all()
         context = {
@@ -82,12 +80,40 @@ class ChangeQTYView(CartMixin, View):
 class Checkout(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
-        #form = OrderForm(request.POST or None)
+        form = OrderForm(request.POST or None)
         context = {
             'cart': self.cart,
-            #'form': form
+            'form': form
         }
         return render(request, 'main/checkout.html', context)
+
+
+class MakeOrderView(CartMixin, View):
+
+    @transaction.atomic
+    def post(self, request, *args, **kwargs):
+        form = OrderForm(request.POST or None)
+        customer = Customer.objects.get(user=request.user)
+        if form.is_valid():
+            new_order = form.save(commit=False)
+            new_order.customer = customer
+            new_order.first_name = form.cleaned_data['first_name']
+            new_order.last_name = form.cleaned_data['last_name']
+            new_order.phone = form.cleaned_data['phone']
+            new_order.address = form.cleaned_data['address']
+            new_order.buying_type = form.cleaned_data['buying_type']
+            new_order.order_date = form.cleaned_data['order_date']
+            new_order.comment = form.cleaned_data['comment']
+            new_order.save()
+            self.cart.in_order = True
+            self.cart.save()
+            new_order.cart = self.cart
+            new_order.save()
+            customer.orders.add(new_order)
+            return HttpResponseRedirect('/')
+        return HttpResponseRedirect('/checkout/')
+
+
 
 
 class RegisterUser(CreateView):

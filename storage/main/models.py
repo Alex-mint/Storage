@@ -52,7 +52,7 @@ class Customer(models.Model):
     orders = models.ManyToManyField('Order', verbose_name='Pedidos', related_name='related_order')
 
     def __str__(self):
-        return "Cliente: {} {}".format(self.user.first_name, self.user.last_name)
+        return f'{self.user.username}'
 
 
 class Order(models.Model):

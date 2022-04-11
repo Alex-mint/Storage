@@ -97,11 +97,11 @@
 
 		                                    {% if request.user.is_authenticated %}
 
-																				<li><a href="">{% trans 'Mis reservas' %}</a></li>
+																				<li><a href="{% url 'account' %}">{% trans 'Mis reservas' %}</a></li>
 																				<li><a href="{% url 'logout' %}">{% trans 'SALIR' %}</a></li>
 
 																						{% if request.user.is_staff %}
-																									<li><a href="">{% trans 'Todas reservas' %}</a></li>
+																									<li><a href="">{% trans 'STAFF' %}</a></li>
 																						{% endif %}
 																				{% else %}
 																				<li><a href="{% url 'register' %}">{% trans 'Registrarme' %}</a></li>
@@ -132,9 +132,9 @@
                                 <div class="header-action-style">
                                     <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
                                 </div>
-                                <div class="">
+                                <div class="header-action-style">
 		                                {% if request.user.is_authenticated %}
-                                    <a class="" href="{% url 'cart' %}"><i class="pe-7s-shopbag"></i>
+                                    <a class="header-action-style" href="{% url 'cart' %}"><i class="pe-7s-shopbag"></i>
                                         <span class="product-count bg-black">{{ cart.products.count }}</span>
                                     </a>
 		                                {% else %}

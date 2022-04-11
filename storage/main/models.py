@@ -55,6 +55,16 @@ class Customer(models.Model):
         return f'{self.user.username}'
 
 
+class CustomerAddress(models.Model):
+    city = models.CharField('Ciudad', max_length=100, null=True, blank=True)
+    street = models.CharField('Ciudad', max_length=100, null=True, blank=True)
+    number = models.CharField('Ciudad', max_length=10, null=True, blank=True)
+    phone = models.CharField('Ciudad', max_length=15, null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.id}'
+
+
 class Order(models.Model):
 
     STATUS_NEW = 'new'

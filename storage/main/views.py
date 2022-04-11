@@ -77,6 +77,17 @@ class ChangeQTYView(CartMixin, View):
         return HttpResponseRedirect('/cart/')
 
 
+class AccountView(CartMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        customer = Customer.objects.get(user=request.user)
+        context = {
+            'customer': customer,
+            'cart': self.cart,
+        }
+        return render(request, 'main/account.html', context)
+
+
 class Checkout(CartMixin, View):
 
     def get(self, request, *args, **kwargs):

@@ -75,11 +75,40 @@
                                                 <h3>Billing Address</h3>
                                                 <address>
                                                     <p><strong>Alex Tuntuni</strong></p>
-                                                    <p>1355 Market St, Suite 900 <br>
-                                                        San Francisco, CA 94103</p>
-                                                    <p>Mobile: (123) 456-7890</p>
+
+                                                    <p>{{ customer.address.city}}</p>
+                                                    <p>{{ customer.address.street}} {{ customer.address.number}}</p>
+                                                    <p>{{ customer.address.phone}}</p>
+
                                                 </address>
-                                                <a href="#" class="check-btn sqr-btn "><i class="fa fa-edit"></i> Edit Address</a>
+
+
+		                                            <div class="mb-20">
+														                    <p class="cart-page-title"><a class="checkout-click1" href="#"><i class="fa fa-edit"></i> Edit Address</a></p>
+														                    <div class="checkout-login-info">
+                                                    <br>
+																                    <form action="{% url 'edit_address' %}" method="POST">
+										                                   {% csrf_token %}
+																				                <div class="sin-checkout-login">
+																                            <label>City <abbr class="required" title="required">*</abbr></label>
+																                            <input class="form-control" name="city"  type="text" value="{{ customer.address.city }}">
+																                        </div>
+																												<div class="sin-checkout-login">
+																                            <label>Street <abbr class="required" title="required">*</abbr></label>
+																                            <input class="form-control" name="street"  type="text" value="{{ customer.address.street }}">
+																                        </div>
+																												<div class="sin-checkout-login">
+																                            <label>Number <abbr class="required" title="required">*</abbr></label>
+																                            <input class="form-control" name="number"  type="text" value="{{ customer.address.number }}">
+																                        </div>
+																		                    <div class="button-remember-wrap">
+														                                <button class="button" type="submit">Guardar</button>
+														                            </div>
+										                                </form>
+
+														                    </div>
+														                </div>
+
                                             </div>
                                         </div>
                                         <!-- Single Tab Content End -->

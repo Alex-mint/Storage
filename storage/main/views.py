@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout, login
 from django.db import transaction
@@ -75,6 +76,22 @@ class ChangeQTYView(CartMixin, View):
         cart_product.save()
         recalc_cart(self.cart)
         return HttpResponseRedirect('/cart/')
+
+
+
+@login_required
+def edit_address(request):
+    if request.method == 'POST':
+        customer = Customer.objects.get(user=request.user)
+        address = customer.address
+        address.city = request.POST.get('city')
+        address.street = request.POST.get('street')
+        address.number = request.POST.get('number')
+        address.save()
+
+        return redirect('account')
+    return render(request, 'main/account.html')
+
 
 
 class AccountView(CartMixin, View):

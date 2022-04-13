@@ -18,18 +18,111 @@
                     <div class="row">
                         <div class="col-lg-7">
                             <div class="billing-info-wrap">
+
+		                            <h3>Billing Details</h3>
+                                <div class="row">
+		                                <form action="" method="POST">
+										                                   {% csrf_token %}
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="billing-info mb-20">
+                                            <label>First Name <abbr class="required" title="required">*</abbr></label>
+                                            <input class="form-control" name="first_name"  type="text" value="{{ customer.first_name }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="billing-info mb-20">
+                                            <label>Last Name <abbr class="required" title="required">*</abbr></label>
+                                            <input class="form-control" name="last_name"  type="text" value="{{ customer.last_name }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="billing-info mb-20">
+                                            <label>Telefono <abbr class="required" title="required">*</abbr></label>
+																            <input class="form-control" name="phone"  type="text" value="{{ customer.phone }}">
+                                        </div>
+                                    </div>
+		                                <div class="col-lg-12">
+                                        <div class="billing-info mb-20">
+                                            <label>City <abbr class="required" title="required">*</abbr></label>
+																            <input class="form-control" name="city"  type="text" value="{{ customer.city }}">
+                                        </div>
+                                    </div>
+		                                <div class="col-lg-6 col-md-6">
+                                        <div class="billing-info mb-20">
+                                            <label>Street <abbr class="required" title="required">*</abbr></label>
+																                            <input class="form-control" name="street"  type="text" value="{{ customer.street }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="billing-info mb-20">
+                                            <label>Number <abbr class="required" title="required">*</abbr></label>
+																            <input class="form-control" name="number"  type="text" value="{{ customer.number }}">
+                                        </div>
+                                    </div>
+		                                <div class="button-remember-wrap">
+														             <button class="button" type="submit">Guardar</button>
+														        </div>
+										                </form>
+
+
+                                </div>
+
                                 <h3>Billing Details</h3>
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="billing-info mb-20">
                                             <form action="{% url 'make_order' %}" method="POST">
 																									{% csrf_token %}
-																								<div class="form-error">{{ form.non_field_errors }}</div>
+																						<!--		<div class="form-error">{{ form.non_field_errors }}</div>
 
-																						{% for f in form %}
-																						<p><label class="" for="{{ f.id_for_label }}">{{f.label}} </label>{{ f }}</p>
-																						<div class="form-error">{{ f.errors }}</div>
-																						{% endfor %}
+
+																						<p><label class="" for="{{ f.id_for_label }}">{{f.label}} </label><input class="form-control" name="number"  type="text" value="{{ customer.number }}"></p>
+																						<div class="form-error">{{ f.errors }}</div>  -->
+
+		                                            <div class="col-lg-12">
+                                        <div class="billing-info mb-20">
+                                            <label>First Name <abbr class="required" title="required">*</abbr></label>
+                                            <input class="form-control" name="first_name"  type="text" value="{{ customer.first_name }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="billing-info mb-20">
+                                            <label>Last Name <abbr class="required" title="required">*</abbr></label>
+                                            <input class="form-control" name="last_name"  type="text" value="{{ customer.last_name }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="billing-info mb-20">
+                                            <label>Telefono <abbr class="required" title="required">*</abbr></label>
+																            <input class="form-control" name="phone"  type="text" value="{{ customer.phone }}">
+                                        </div>
+                                    </div>
+		                                <div class="col-lg-12">
+                                        <div class="billing-info mb-20">
+                                            <label>City <abbr class="required" title="required">*</abbr></label>
+																            <input class="form-control" name="city"  type="text" value="{{ customer.city }}">
+                                        </div>
+                                    </div>
+		                                <div class="col-lg-12">
+                                        <div class="billing-info mb-20">
+                                            <label>Street <abbr class="required" title="required">*</abbr></label>
+																                            <input class="form-control" name="street"  type="text" value="{{ customer.street }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="billing-info mb-20">
+                                            <label>Number <abbr class="required" title="required">*</abbr></label>
+																            <input class="form-control" name="number"  type="text" value="{{ customer.number }}">
+                                        </div>
+                                    </div>
+		                                <div class="col-lg-12">
+                                        <div class="billing-info mb-20">
+                                            <label>Number <abbr class="required" title="required">*</abbr></label>
+																            <p>{{ form.order_date}}</p>
+                                        </div>
+                                    </div>
+
+
 																								<hr>
 
 																								<button class="btn btn-outline-dark" type="submit">{% trans 'Reservar' %}</button>

@@ -6,11 +6,11 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import ListView, CreateView
+from django.views.generic import CreateView
 
 from .forms import RegisterUserForm, LoginUserForm, OrderForm
 from .mixins import CartMixin
-from .models import Item, CartProduct, Customer
+from .models import Item, CartProduct, Customer, Order, Cart
 from .utils import recalc_cart
 
 
@@ -78,20 +78,28 @@ class ChangeQTYView(CartMixin, View):
         return HttpResponseRedirect('/cart/')
 
 
-
 @login_required
 def edit_address(request):
     if request.method == 'POST':
         customer = Customer.objects.get(user=request.user)
-        address = customer.address
-        address.city = request.POST.get('city')
-        address.street = request.POST.get('street')
-        address.number = request.POST.get('number')
-        address.save()
-
+        customer.city = request.POST.get('city')
+        customer.street = request.POST.get('street')
+        customer.number = request.POST.get('number')
+        customer.save()
         return redirect('account')
     return render(request, 'main/account.html')
 
+
+@login_required
+def edit_account(request):
+    if request.method == 'POST':
+        customer = Customer.objects.get(user=request.user)
+        customer.first_name = request.POST.get('first_name')
+        customer.last_name = request.POST.get('last_name')
+        customer.phone = request.POST.get('phone')
+        customer.save()
+        return redirect('account')
+    return render(request, 'main/account.html')
 
 
 class AccountView(CartMixin, View):
@@ -108,8 +116,10 @@ class AccountView(CartMixin, View):
 class Checkout(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
+        customer = Customer.objects.get(user=request.user)
         form = OrderForm(request.POST or None)
         context = {
+            'customer': customer,
             'cart': self.cart,
             'form': form
         }
@@ -124,12 +134,14 @@ class MakeOrderView(CartMixin, View):
         customer = Customer.objects.get(user=request.user)
         if form.is_valid():
             new_order = form.save(commit=False)
+            customer.first_name = form.cleaned_data['first_name']
+            customer.last_name = form.cleaned_data['last_name']
+            customer.phone = form.cleaned_data['phone']
+            customer.save()
             new_order.customer = customer
             new_order.first_name = form.cleaned_data['first_name']
             new_order.last_name = form.cleaned_data['last_name']
             new_order.phone = form.cleaned_data['phone']
-            new_order.address = form.cleaned_data['address']
-            new_order.buying_type = form.cleaned_data['buying_type']
             new_order.order_date = form.cleaned_data['order_date']
             new_order.comment = form.cleaned_data['comment']
             new_order.save()
@@ -142,13 +154,10 @@ class MakeOrderView(CartMixin, View):
         return HttpResponseRedirect('/checkout/')
 
 
-
-
 class RegisterUser(CreateView):
     form_class = RegisterUserForm
     template_name = 'main/register.html'
     success_url = reverse_lazy('login')
-
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -158,7 +167,6 @@ class RegisterUser(CreateView):
         user = form.save()
         login(self.request, user)
         return redirect('home')
-
 
 
 class LoginUser(LoginView):
@@ -176,4 +184,3 @@ class LoginUser(LoginView):
 def logout_user(request):
     logout(request)
     return redirect('home')
-

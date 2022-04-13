@@ -9,23 +9,6 @@ from django.utils.translation import gettext_lazy as _
 from datetime import timedelta
 
 
-# class OrderForm(forms.Form):
-#     first_name = forms.CharField(label='', widget=forms.TextInput(
-#         attrs={'class': 'form-field', 'placeholder': _('Nombre')}))
-#     last_name = forms.CharField(label='', widget=forms.TextInput(
-#         attrs={'class': 'form-field', 'placeholder': _('Apellidos')}))
-#     phone = forms.CharField(label='', widget=forms.TextInput(
-#         attrs={'class': 'form-field', 'placeholder': _('Teléfono')}))
-#     country = forms.ImageField(label='', widget=forms.TextInput(
-#         attrs={'class': 'form-field', 'placeholder': _('Pais')}))
-#     comment = forms.CharField(required=False, label='',
-#                               widget=forms.Textarea(
-#                                   attrs={'cols': 42, 'rows': 4,
-#                                          'class': 'form-field',
-#                                          'placeholder': _('Comentario')})
-#                               )
-
-
 class OrderForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
@@ -38,7 +21,7 @@ class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = (
-            'first_name', 'last_name', 'phone', 'address', 'buying_type',
+            'first_name', 'last_name', 'phone', 'city', 'street', 'number',
             'order_date', 'comment'
         )
 

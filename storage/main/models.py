@@ -126,3 +126,17 @@ class Order(models.Model):
 
     def get_absolute_url(self):
         return reverse('order', kwargs={'id': self.id})
+
+
+class Image(models.Model):
+    order = models.ForeignKey(
+        Order, on_delete=models.CASCADE, related_name='images',
+        verbose_name="Localizacion"
+    )
+    image = models.ImageField('Imagen')
+
+    def __str__(self):
+        return f'{self.id}. {self.order.id}'
+
+    class Meta(object):
+        verbose_name = "Imagen"

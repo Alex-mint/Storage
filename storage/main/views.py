@@ -125,9 +125,11 @@ class StaffView(View):
 
 def order_detail(request, id):
     order = get_object_or_404(Order, id=id)
-    #images = Images.objects.filter(apartment__slug=slug)
     context = {
         'order': order,
+        'first_image': order.images.all()[:1],
+        'images': [image.image.url for image in order.images.all()[1:]],
+        'all_images': [image.image.url for image in order.images.all()],
     }
 
     return render(request, 'main/order-details.html', context=context)

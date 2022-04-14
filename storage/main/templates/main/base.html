@@ -101,7 +101,7 @@
 																				<li><a href="{% url 'logout' %}">{% trans 'SALIR' %}</a></li>
 
 																						{% if request.user.is_staff %}
-																									<li><a href="">{% trans 'STAFF' %}</a></li>
+																									<li><a href="{% url 'staff' %}">{% trans 'STAFF' %}</a></li>
 																						{% endif %}
 																				{% else %}
 																				<li><a href="{% url 'register' %}">{% trans 'Registrarme' %}</a></li>

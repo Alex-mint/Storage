@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout, login
 from django.db import transaction
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView
@@ -111,6 +111,26 @@ class AccountView(CartMixin, View):
             'cart': self.cart,
         }
         return render(request, 'main/account.html', context)
+
+
+class StaffView(View):
+
+    def get(self, request, *args, **kwargs):
+        orders = Order.objects.all
+        context = {
+            'orders': orders
+        }
+        return render(request, 'main/staff.html', context)
+
+
+def order_detail(request, id):
+    order = get_object_or_404(Order, id=id)
+    #images = Images.objects.filter(apartment__slug=slug)
+    context = {
+        'order': order,
+    }
+
+    return render(request, 'main/order-details.html', context=context)
 
 
 class Checkout(CartMixin, View):

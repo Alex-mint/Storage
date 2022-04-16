@@ -113,6 +113,16 @@ def edit_status(request, id):
     return render(request, '/')
 
 
+@login_required
+def edit_staff_comment(request, id):
+    if request.method == 'POST':
+        order = Order.objects.get(id=id)
+        order.staff_comment = request.POST.get('comment')
+        order.save()
+        return redirect(f'/order-details/{id}')
+    return render(request, '/')
+
+
 class AccountView(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
@@ -167,11 +177,6 @@ def add_image(request, id):
             order=order,
             image=request.POST.get('image')
         )
-        # customer = Customer.objects.get(user=request.user)
-        # customer.city = request.POST.get('city')
-        # customer.street = request.POST.get('street')
-        # customer.number = request.POST.get('number')
-        # customer.save()
         return redirect('order_details')
     return render(request, 'main/account.html')
 

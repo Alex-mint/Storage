@@ -129,7 +129,17 @@
                     </div>
                     <div id="des-details2" class="tab-pane">
                         <div class="product-description-content text-center">
-                            <p data-aos="fade-up" data-aos-delay="200">{{order.staff_comment}}</p>
+                            <form action="{% url 'edit_staff_comment' id=order.id %}" method="POST">
+										            {% csrf_token %}
+																<div class="sin-checkout-login">
+																		<br>
+																		<p><textarea rows="4" cols="30" name="comment">{{ order.staff_comment }}</textarea></p>
+																		<br>
+																</div>
+																<div class="button-remember-wrap">
+														        <button class="btn btn-outline-success" type="submit">Guardar</button>
+														    </div>
+										        </form>
                         </div>
                     </div>
                     <div id="des-details3" class="tab-pane">

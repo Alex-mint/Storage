@@ -83,6 +83,15 @@
                                             <li><a href="#">Home</a></li>
                                         </ul>
                                     </li>
+		                                <form action="" method="post" enctype="multipart/form-data">
+																		    {% csrf_token %}
+																		    <div class="form-error">{{ form.non_field_errors }}</div>
+																				{% for f in form %}
+																					<p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
+																				<div class="form-error">{{ f.errors }}</div>
+																				{% endfor %}
+																		        <button class="btn btn-outline-success" type="submit">Añadir</button>
+																		</form>
                                     <li><span class="title">Tags:</span>
                                         <ul class="tag">
                                             <li><a href="#">Furniture</a></li>
@@ -91,28 +100,7 @@
                                 </ul>
                             </div>
 
-                            <div class="product-details-action-wrap">
-                                <div class="product-quality">
-                                    <input class="cart-plus-minus-box input-text qty text" name="qtybutton" value="1">
-                                </div>
-                                <div class="single-product-cart btn-hover">
-                                    <a href="#">Add to cart</a>
-                                </div>
-                                <div class="single-product-wishlist">
-                                    <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                </div>
-                                <div class="single-product-compare">
-                                    <a title="Compare" href="#"><i class="pe-7s-shuffle"></i></a>
-                                </div>
-                            </div>
 
-                            <div class="social-icon-style-4">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-dribbble"></i></a>
-                                <a href="#"><i class="fa fa-pinterest-p"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-linkedin"></i></a>
-                            </div>
                         </div>
                     </div>
                 </div>

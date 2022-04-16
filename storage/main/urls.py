@@ -16,7 +16,6 @@ urlpatterns = [
     path('make-order/', views.MakeOrderView.as_view(), name='make_order'),
     path('edit-address/', views.edit_address, name='edit_address'),
     path('edit-account/', views.edit_account, name='edit_account'),
-
     path('change-qty/<str:slug>/', views.ChangeQTYView.as_view(), name='change_qty'),
     path('remove-from-cart/<str:slug>/', views.DeleteFromCartView.as_view(), name='delete_from_cart'),
 ]

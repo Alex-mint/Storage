@@ -133,7 +133,7 @@ class Image(models.Model):
         Order, on_delete=models.CASCADE, related_name='images',
         verbose_name="Localizacion"
     )
-    image = models.ImageField('Imagen')
+    image = models.ImageField('Fotos de pedido')
 
     def __str__(self):
         return f'{self.id}. {self.order.id}'

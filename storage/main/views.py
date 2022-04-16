@@ -8,9 +8,9 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView
 
-from .forms import RegisterUserForm, LoginUserForm, OrderForm
+from .forms import RegisterUserForm, LoginUserForm, OrderForm, AddImageForm
 from .mixins import CartMixin
-from .models import Item, CartProduct, Customer, Order, Cart
+from .models import Item, CartProduct, Customer, Order, Cart, Image
 from .utils import recalc_cart
 
 
@@ -118,21 +118,50 @@ class StaffView(View):
     def get(self, request, *args, **kwargs):
         orders = Order.objects.all
         context = {
-            'orders': orders
+            'orders': orders,
+
         }
         return render(request, 'main/staff.html', context)
 
 
 def order_detail(request, id):
     order = get_object_or_404(Order, id=id)
+    form = AddImageForm(request.POST, request.FILES)
+    if request.method == 'POST':
+        if form.is_valid():
+            Image.objects.create(
+                order=get_object_or_404(Order, id=id),
+                image=request.FILES.get('image')
+            )
+            return redirect(f'/order-details/{id}')
+    else:
+        form = AddImageForm()
     context = {
         'order': order,
         'first_image': order.images.all()[:1],
         'images': [image.image.url for image in order.images.all()[1:]],
         'all_images': [image.image.url for image in order.images.all()],
+        'form': form
     }
 
     return render(request, 'main/order-details.html', context=context)
+
+
+@login_required
+def add_image(request, id):
+    if request.method == 'POST':
+        order = get_object_or_404(Order, id=id)
+        Image.objects.create(
+            order=order,
+            image=request.POST.get('image')
+        )
+        # customer = Customer.objects.get(user=request.user)
+        # customer.city = request.POST.get('city')
+        # customer.street = request.POST.get('street')
+        # customer.number = request.POST.get('number')
+        # customer.save()
+        return redirect('order_details')
+    return render(request, 'main/account.html')
 
 
 class Checkout(CartMixin, View):

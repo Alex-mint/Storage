@@ -26,6 +26,17 @@ class OrderForm(forms.ModelForm):
         )
 
 
+class AddImageForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        #self.fields['image'].empty_label = "Категория не выбрана"
+
+    class Meta:
+        model = Image
+        fields = ['image']
+
+
 class RegisterUserForm(UserCreationForm):
     username = forms.CharField(label='', widget=forms.TextInput(
         attrs={'class': 'form-field', 'placeholder': _('Usuario')}))

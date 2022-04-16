@@ -28,13 +28,16 @@ class OrderForm(forms.ModelForm):
 
 class AddImageForm(forms.ModelForm):
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        #self.fields['image'].empty_label = "Категория не выбрана"
-
     class Meta:
         model = Image
         fields = ['image']
+
+
+class StatusForm(forms.ModelForm):
+
+    class Meta:
+        model = Order
+        fields = ['status']
 
 
 class RegisterUserForm(UserCreationForm):

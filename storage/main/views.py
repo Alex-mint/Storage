@@ -8,7 +8,8 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView
 
-from .forms import RegisterUserForm, LoginUserForm, OrderForm, AddImageForm
+from .forms import RegisterUserForm, LoginUserForm, OrderForm, AddImageForm, \
+    StatusForm
 from .mixins import CartMixin
 from .models import Item, CartProduct, Customer, Order, Cart, Image
 from .utils import recalc_cart
@@ -102,6 +103,16 @@ def edit_account(request):
     return render(request, 'main/account.html')
 
 
+@login_required
+def edit_status(request, id):
+    if request.method == 'POST':
+        order = Order.objects.get(id=id)
+        order.status = request.POST.get('status')
+        order.save()
+        return redirect(f'/order-details/{id}')
+    return render(request, '/')
+
+
 class AccountView(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
@@ -141,7 +152,8 @@ def order_detail(request, id):
         'first_image': order.images.all()[:1],
         'images': [image.image.url for image in order.images.all()[1:]],
         'all_images': [image.image.url for image in order.images.all()],
-        'form': form
+        'form': form,
+        'status_form': StatusForm(request.POST)
     }
 
     return render(request, 'main/order-details.html', context=context)

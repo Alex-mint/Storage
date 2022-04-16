@@ -62,9 +62,34 @@
                         <div class="product-details-content" data-aos="fade-up" data-aos-delay="400">
                             <h2>Pedido ID: {{ order.id }}</h2>
                             <div class="product-details-price">
-                                <span class="old-price">$25.89 </span>
-                                <span class="new-price">$20.25</span>
+                                Status :
+                                <span class="new-price">{{ order.get_status_display }}</span>
                             </div>
+		                        <div class="mb-20">
+														    <p class="cart-page-title"><a class="checkout-click1" href="#"><i class="fa fa-edit"></i> Editar Status</a></p>
+														    <div class="checkout-login-info">
+                                    <br>
+						                        <form action="{% url 'edit_status' id=order.id %}" method="POST">
+								                        {% csrf_token %}
+
+																				<div class="sin-checkout-login">
+																				    <p>{{ status_form }}</p>
+																				</div>
+																				<div class="button-remember-wrap">
+																		        <button class="button" type="submit">Guardar</button>
+																		    </div>
+														        </form>
+																</div>
+				                    </div>
+		                        <form action="" method="post" enctype="multipart/form-data">
+																		    {% csrf_token %}
+																		    <div class="form-error">{{ form.non_field_errors }}</div>
+																				{% for f in form %}
+																					<p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
+																				<div class="form-error">{{ f.errors }}</div>
+																				{% endfor %}
+																		        <button class="btn btn-outline-success" type="submit">Añadir</button>
+																		</form>
 		                        <div class="product-details-meta">
                                 <ul>
                                     <li><span class="title">Nombre:</span> {{ order.first_name }}</li>
@@ -74,33 +99,16 @@
                                     <li><span class="title">Ciudad:</span> {{ order.city }}</li>
                                     <li><span class="title">Calle:</span> {{ order.street }}</li>
                                     <li><span class="title">N:</span> {{ order.number }}</li>
-		                                {% for item in order.cart.products.all %}
+
+
+                                </ul>
+				                        <hr>
+				                        <ul>
+						                        {% for item in order.cart.products.all %}
 		                                    <li><span class="title">{{item.qty}}x{{item.item.title}}</span> {{item.month}} meses</li>
 		                                {% endfor %}
-                                    <li><span class="title">Apeilldos:</span>
-                                        <ul>
-                                            <li><a href="#">Office</a>,</li>
-                                            <li><a href="#">Home</a></li>
-                                        </ul>
-                                    </li>
-		                                <form action="" method="post" enctype="multipart/form-data">
-																		    {% csrf_token %}
-																		    <div class="form-error">{{ form.non_field_errors }}</div>
-																				{% for f in form %}
-																					<p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
-																				<div class="form-error">{{ f.errors }}</div>
-																				{% endfor %}
-																		        <button class="btn btn-outline-success" type="submit">Añadir</button>
-																		</form>
-                                    <li><span class="title">Tags:</span>
-                                        <ul class="tag">
-                                            <li><a href="#">Furniture</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
+				                        </ul>
                             </div>
-
-
                         </div>
                     </div>
                 </div>

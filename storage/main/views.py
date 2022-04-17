@@ -25,6 +25,22 @@ class Home(CartMixin, View):
         return render(request, 'main/index.html', context)
 
 
+class AboutUs(CartMixin, View):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'cart': self.cart
+        }
+        return render(request, 'main/about_us.html', context)
+
+
+class ContactUs(CartMixin, View):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'cart': self.cart
+        }
+        return render(request, 'main/contact_us.html', context)
+
+
 class CartView(CartMixin, View):
 
     def get(self, request, *args, **kwargs):

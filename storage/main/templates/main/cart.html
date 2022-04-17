@@ -2,6 +2,17 @@
 {% load static %}
 {% block content %}
 
+{% if messages %}
+     {% for message in messages %}
+         <div class="container">
+             <div class="alert alert-success alert-dismissible fade show" role="alert">
+		             <center><h5>{{ message }}</h5></center>
+                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-lable="Close"></button>
+             </div>
+         </div>
+     {% endfor %}
+{% endif %}
+
 <div class="cart-area pt-100 pb-100">
             <div class="container">
                 <div class="row">

@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib import messages
+from main.models import PageMessage
 
 
 def recalc_cart(cart):
@@ -9,3 +11,8 @@ def recalc_cart(cart):
         cart.final_price = 0
     cart.total_products = cart_data['id__count']
     cart.save()
+
+
+def send_message(mesage, request):
+    text = PageMessage.objects.get(title=mesage)
+    messages.add_message(request, messages.INFO, text.text)

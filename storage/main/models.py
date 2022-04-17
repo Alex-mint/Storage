@@ -10,6 +10,7 @@ class Item(models.Model):
     image = models.ImageField('Imagen')
     description = models.TextField('Descripcion', null=True)
     price = models.DecimalField('Precio', max_digits=9, decimal_places=2)
+    extra = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
@@ -140,3 +141,14 @@ class Image(models.Model):
 
     class Meta(object):
         verbose_name = "Imagen"
+
+
+class PageMessage(models.Model):
+    title = models.CharField('Nombre', max_length=255)
+    text = models.TextField('Mensaje')
+
+    def __str__(self):
+        return self.title
+
+    class Meta(object):
+        verbose_name = "Mensaje"

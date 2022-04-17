@@ -98,40 +98,33 @@
                                         <div class="tab-pane fade" id="address-edit" role="tabpanel">
                                             <div class="myaccount-content">
                                                 <h3>Recibido</h3>
-                                                <address>
-                                                    <p><strong>{{ customer.user.username}}</strong></p>
+                                                <div class="myaccount-table table-responsive text-center">
+                                                    <table class="table table-bordered">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Order ID</th>
+                                                                <th>Date</th>
+                                                                <th>Status</th>
+                                                                <th>Total</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                           {% for order in orders %}
+                                                           {% if order.status == 'is_ready' %}
+                                                            <tr>
+                                                                <td>{{ order.id }}</td>
+                                                                <td>{{ order.order_date|date:"d-m-Y" }}</td>
+                                                                <td>{{ order.get_status_display }}</td>
+                                                                <td>{{ order.cart.final_price }}</td>
+                                                                <td><a href="{% url 'order_details' id=order.id %}" class="check-btn sqr-btn ">View</a></td>
+                                                            </tr>
+                                                           {%endif%}
+                                                            {% endfor %}
 
-                                                    <p>{{ customer.city}}</p>
-                                                    <p>{{ customer.street}} {{ customer.number}}</p>
-
-                                                </address>
-
-
-		                                            <div class="mb-20">
-														                    <p class="cart-page-title"><a class="checkout-click1" href="#"><i class="fa fa-edit"></i> Edit Address</a></p>
-														                    <div class="checkout-login-info">
-                                                    <br>
-																                    <form action="{% url 'edit_address' %}" method="POST">
-										                                   {% csrf_token %}
-																				                <div class="sin-checkout-login">
-																                            <label>City <abbr class="required" title="required">*</abbr></label>
-																                            <input class="form-control" name="city"  type="text" value="{{ customer.city }}">
-																                        </div>
-																												<div class="sin-checkout-login">
-																                            <label>Street <abbr class="required" title="required">*</abbr></label>
-																                            <input class="form-control" name="street"  type="text" value="{{ customer.street }}">
-																                        </div>
-																												<div class="sin-checkout-login">
-																                            <label>Number <abbr class="required" title="required">*</abbr></label>
-																                            <input class="form-control" name="number"  type="text" value="{{ customer.number }}">
-																                        </div>
-																		                    <div class="button-remember-wrap">
-														                                <button class="button" type="submit">Guardar</button>
-														                            </div>
-										                                </form>
-
-														                    </div>
-														                </div>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
 
                                             </div>
                                         </div>
@@ -140,41 +133,33 @@
                                         <div class="tab-pane fade" id="account-info" role="tabpanel">
 		                                        <div class="myaccount-content">
                                                 <h3>Entregado</h3>
-                                                <address>
-                                                    <p><strong>{{ customer.user.username}}</strong></p>
+                                                <div class="myaccount-table table-responsive text-center">
+                                                    <table class="table table-bordered">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Order ID</th>
+                                                                <th>Date</th>
+                                                                <th>Status</th>
+                                                                <th>Total</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                           {% for order in orders %}
+                                                           {% if order.status == 'completed' %}
+                                                            <tr>
+                                                                <td>{{ order.id }}</td>
+                                                                <td>{{ order.order_date|date:"d-m-Y" }}</td>
+                                                                <td>{{ order.get_status_display }}</td>
+                                                                <td>{{ order.cart.final_price }}</td>
+                                                                <td><a href="{% url 'order_details' id=order.id %}" class="check-btn sqr-btn ">View</a></td>
+                                                            </tr>
+                                                           {%endif%}
+                                                            {% endfor %}
 
-                                                    <p>{{ customer.first_name}}</p>
-                                                    <p>{{ customer.last_name}}</p>
-
-                                                </address>
-
-
-		                                            <div class="mb-20">
-														                    <p class="cart-page-title"><a class="checkout-click1" href="#"><i class="fa fa-edit"></i> Edit Account</a></p>
-														                    <div class="checkout-login-info">
-                                                    <br>
-																                    <form action="{% url 'edit_account' %}" method="POST">
-										                                   {% csrf_token %}
-
-																				                <div class="sin-checkout-login">
-																                            <label>Nombre <abbr class="required" title="required">*</abbr></label>
-																                            <input class="form-control" name="first_name"  type="text" value="{{ customer.first_name }}">
-																                        </div>
-																												<div class="sin-checkout-login">
-																                            <label>Apellidos <abbr class="required" title="required">*</abbr></label>
-																                            <input class="form-control" name="last_name"  type="text" value="{{ customer.first_name }}">
-																                        </div>
-																												<div class="sin-checkout-login">
-																                            <label>Telefono <abbr class="required" title="required">*</abbr></label>
-																                            <input class="form-control" name="phone"  type="text" value="{{ customer.phone }}">
-																                        </div>
-																		                    <div class="button-remember-wrap">
-														                                <button class="button" type="submit">Guardar</button>
-														                            </div>
-										                                </form>
-
-														                    </div>
-														                </div>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
 
                                             </div>
 

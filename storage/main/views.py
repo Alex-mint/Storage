@@ -11,13 +11,13 @@ from django.views.generic import CreateView
 from .forms import RegisterUserForm, LoginUserForm, OrderForm, AddImageForm, \
     StatusForm
 from .mixins import CartMixin
-from .models import Item, CartProduct, Customer, Order, Cart, Image
-from .utils import recalc_cart
+from .models import Item, CartProduct, Customer, Order, Image
+from .utils import recalc_cart, send_message
 
 
 class Home(CartMixin, View):
     def get(self, request, *args, **kwargs):
-        products = Item.objects.all()
+        products = Item.objects.filter(extra=False)
         context = {
             'products': products,
             'cart': self.cart
@@ -45,6 +45,7 @@ class AddToCartView(CartMixin, View):
         if created:
             self.cart.products.add(cart_product)
         recalc_cart(self.cart)
+        send_message('add_to_cart', request)
         return HttpResponseRedirect('/')
 
 
@@ -76,6 +77,7 @@ class ChangeQTYView(CartMixin, View):
         cart_product.qty = qty
         cart_product.save()
         recalc_cart(self.cart)
+        send_message('update_price', request)
         return HttpResponseRedirect('/cart/')
 
 
@@ -87,6 +89,7 @@ def edit_address(request):
         customer.street = request.POST.get('street')
         customer.number = request.POST.get('number')
         customer.save()
+        send_message('edit_address', request)
         return redirect('account')
     return render(request, 'main/account.html')
 
@@ -99,6 +102,7 @@ def edit_account(request):
         customer.last_name = request.POST.get('last_name')
         customer.phone = request.POST.get('phone')
         customer.save()
+        send_message('edit_account', request)
         return redirect('account')
     return render(request, 'main/account.html')
 
@@ -169,18 +173,6 @@ def order_detail(request, id):
     return render(request, 'main/order-details.html', context=context)
 
 
-@login_required
-def add_image(request, id):
-    if request.method == 'POST':
-        order = get_object_or_404(Order, id=id)
-        Image.objects.create(
-            order=order,
-            image=request.POST.get('image')
-        )
-        return redirect('order_details')
-    return render(request, 'main/account.html')
-
-
 class Checkout(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
@@ -218,7 +210,8 @@ class MakeOrderView(CartMixin, View):
             new_order.cart = self.cart
             new_order.save()
             customer.orders.add(new_order)
-            return HttpResponseRedirect('/')
+            send_message('new_order', request)
+            return redirect('account')
         return HttpResponseRedirect('/checkout/')
 
 

@@ -1,6 +1,6 @@
 from django.views.generic import View
 
-from .models import Cart, Customer
+from .models import Cart, Customer, Storage
 
 
 class CartMixin(View):
@@ -20,4 +20,5 @@ class CartMixin(View):
             if not cart:
                 cart = Cart.objects.create(for_anonymous_user=True)
         self.cart = cart
+        self.storage = Storage.objects.all()[0]  #1
         return super().dispatch(request, *args, **kwargs)

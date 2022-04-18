@@ -67,7 +67,7 @@
                                                            {% for order in customer.orders.all %}
                                                             <tr>
                                                                 <td>{{ order.id }}</td>
-                                                                <td>{{ order.order_date|date:"d-m-Y" }}</td>
+                                                                <td>{{ order.order_start|date:"d-m-Y" }}</td>
                                                                 <td>{{ order.get_status_display }}</td>
                                                                 <td>{{ order.cart.final_price }}</td>
                                                                 <td><a href="cart.html" class="check-btn sqr-btn ">View</a></td>
@@ -130,8 +130,10 @@
                                                 <address>
                                                     <p><strong>{{ customer.user.username}}</strong></p>
 
-                                                    <p>{{ customer.first_name}}</p>
-                                                    <p>{{ customer.last_name}}</p>
+                                                    <p>{{ customer.first_name }}</p>
+                                                    <p>{{ customer.last_name }}</p>
+                                                    <p>{{ customer.phone }}</p>
+                                                    <p>{{ customer.email }}</p>
 
                                                 </address>
 
@@ -149,11 +151,15 @@
 																                        </div>
 																												<div class="sin-checkout-login">
 																                            <label>Apellidos <abbr class="required" title="required">*</abbr></label>
-																                            <input class="form-control" name="last_name"  type="text" value="{{ customer.first_name }}">
+																                            <input class="form-control" name="last_name"  type="text" value="{{ customer.last_name }}">
 																                        </div>
 																												<div class="sin-checkout-login">
 																                            <label>Telefono <abbr class="required" title="required">*</abbr></label>
 																                            <input class="form-control" name="phone"  type="text" value="{{ customer.phone }}">
+																                        </div>
+																		                    <div class="sin-checkout-login">
+																                            <label>Email <abbr class="required" title="required">*</abbr></label>
+																                            <input class="form-control" name="email"  type="text" value="{{ customer.email }}">
 																                        </div>
 																		                    <div class="button-remember-wrap">
 														                                <button class="button" type="submit">Guardar</button>

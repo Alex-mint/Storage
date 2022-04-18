@@ -22,10 +22,10 @@
                                     <table>
                                         <thead>
                                             <tr>
+		                                            <th class="width-thumbnail"></th>
                                                 <th class="width-thumbnail">Product</th>
                                                 <th class="width-price"> Price</th>
                                                 <th class="width-quantity">Quantity</th>
-                                                <th class="width-quantity">Months</th>
 		                                            <th class="width-thumbnail">Action</th>
                                                 <th class="width-subtotal">Subtotal</th>
                                                 <th class="width-remove"></th>
@@ -34,7 +34,9 @@
                                         <tbody>
                                             {% for item in cart.products.all %}
                                             <tr>
-
+                                                <td class="product-thumbnail">
+                                                    <img src="{{ item.item.image.url }}" width="40px" alt="{{item.item.title}}">
+                                                </td>
                                                 <td class="product-name">
                                                     <h5><a href="product-details.html">{{item.item.title}}</a></h5>
                                                 </td>
@@ -46,9 +48,7 @@
 
                                                      <input type="number" class="form-control" name="qty" style="width: 70px;" min="1" value="{{ item.qty }}">
 		                                                  </td>
-		                                            <td class="cart-quality">
-                                                    <input type="number" class="form-control" name="month" style="width: 70px;" min="1" value="{{ item.month }}">
-                                                </td>
+
 		                                            <td class="cart-quality">
                                                      <input type="submit" class="cart-clear btn-hover" value="Изменить кол-во">
                                                     </form>
@@ -61,6 +61,48 @@
                                                 <td class="product-remove"><a href="{% url 'delete_from_cart' slug=item.item.slug %}"><i class=" ti-trash "></i></a></td>
                                             </tr>
                                             {% endfor %}
+
+                                        </tbody>
+                                    </table>
+		                                <br>
+		                                <table>
+                                        <thead>
+                                            <tr>
+		                                            <td class="product-thumbnail"></td>
+                                                <th class="width-thumbnail"></th>
+                                                <th class="width-price"></th>
+                                                <th class="width-quantity"></th>
+                                                <th class="width-quantity"></th>
+		                                            <th class="width-thumbnail">Months</th>
+                                                <th class="width-subtotal">Action</th>
+                                                <th class="width-remove"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+
+
+                                            <tr>
+                                                <td class="product-thumbnail"></td>
+                                                <td class="product-thumbnail"></td>
+                                                <td class="product-name">
+                                                </td>
+                                                <td class="product-cart-price"></td>
+                                                <td class="product-total"></td>
+		                                            <td class="cart-quality">
+		                                            <form action="{% url 'edit_months' id=cart.id %}" method="POST">
+                                                    {% csrf_token %}
+                                                     <input type="number" class="form-control" name="months" style="width: 70px;" min="1" value="{{ cart.month }}">
+		                                                  </td>
+		                                            <td class="cart-quality">
+                                                     <input type="submit" class="cart-clear btn-hover" value="Изменить кол-во">
+                                                    </form>
+		                                            </td
+
+
+
+                                                <td class="product-remove"></td>
+                                            </tr>
                                             <tr>
                                                 <td class="product-thumbnail">
                                                 </td>
@@ -70,10 +112,9 @@
                                                 <td class="cart-quality">
 
                                                 </td>
-		                                            <td class="cart-quality"><h5>Items: <strong>{{cart.total_products}}</strong></h5>
-                                                </td>
-                                                <td class="product-total"><h5>Total:<strong> ${{cart.final_price|floatformat:2}}</strong></h5></td>
-                                                <td class="product-remove"></td>
+		                                            <td class="cart-quality"></td>
+                                                <td class="product-total"></td>
+                                                <td class="product-remove"><h5>Total:<strong> ${{cart.final_price|floatformat:2}}</strong></h5></td>
                                             </tr>
                                         </tbody>
                                     </table>

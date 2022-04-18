@@ -63,6 +63,12 @@
                                     </div>
 		                                <div class="col-lg-12">
                                         <div class="billing-info mb-20">
+                                            <label>Email <abbr class="required" title="required">*</abbr></label>
+																            <input class="form-control" name="email"  type="text" value="{{ customer.email }}">
+                                        </div>
+                                    </div>
+		                                <div class="col-lg-12">
+                                        <div class="billing-info mb-20">
                                             <label>City <abbr class="required" title="required">*</abbr></label>
 																            <input class="form-control" name="city"  type="text" value="{{ customer.city }}">
                                         </div>
@@ -84,6 +90,9 @@
                                             <label>Fecha de inicio <abbr class="required" title="required">*</abbr></label>
 																            <p>{{ form.order_date}}</p>
                                         </div>
+                                    </div>
+		                                <div class="col-lg-12">
+                                        <textarea name="message" placeholder="Message"></textarea>
                                     </div>
 
 
@@ -111,14 +120,14 @@
                                         <div class="your-order-middle">
                                             <ul>
 		                                            {% for item in cart.products.all %}
-                                                <li>{{item.qty}} {{item.item.title}}, {{item.month}}  meses   <span>{{item.final_price|floatformat:2}}€ </span></li>
+                                                <li>{{item.qty}} {{item.item.title}} x  1 mes   <span>{{item.final_price|floatformat:2}}€ </span></li>
 
 		                                            {% endfor %}
-                                            </ul>
+                                            </ul
                                         </div>
                                         <div class="your-order-info order-subtotal">
                                             <ul>
-                                                <li>Total <span>{{cart.final_price|floatformat:2}}€ </span></li>
+                                                <li>Total x {{ cart.month }} meses<span>{{cart.final_price|floatformat:2}}€ </span></li>
                                             </ul>
                                         </div>
                                     </div>

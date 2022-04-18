@@ -21,20 +21,18 @@ class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = (
-            'first_name', 'last_name', 'phone', 'city', 'street', 'number',
-            'order_date', 'comment'
+            'first_name', 'last_name', 'phone', 'email', 'city', 'street',
+            'number', 'order_date', 'comment'
         )
 
 
 class AddImageForm(forms.ModelForm):
-
     class Meta:
         model = Image
         fields = ['image']
 
 
 class StatusForm(forms.ModelForm):
-
     class Meta:
         model = Order
         fields = ['status']

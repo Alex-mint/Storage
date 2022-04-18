@@ -11,7 +11,7 @@ from django.views.generic import CreateView
 from .forms import RegisterUserForm, LoginUserForm, OrderForm, AddImageForm, \
     StatusForm
 from .mixins import CartMixin
-from .models import Item, CartProduct, Customer, Order, Image
+from .models import Item, CartProduct, Customer, Order, Image, Storage
 from .utils import recalc_cart, send_message
 
 
@@ -19,6 +19,7 @@ class Home(CartMixin, View):
     def get(self, request, *args, **kwargs):
         products = Item.objects.filter(extra=False)
         context = {
+            'storage': self.storage,
             'products': products,
             'cart': self.cart
         }
@@ -28,6 +29,7 @@ class Home(CartMixin, View):
 class AboutUs(CartMixin, View):
     def get(self, request, *args, **kwargs):
         context = {
+            'storage': self.storage,
             'cart': self.cart
         }
         return render(request, 'main/about_us.html', context)
@@ -36,6 +38,7 @@ class AboutUs(CartMixin, View):
 class ContactUs(CartMixin, View):
     def get(self, request, *args, **kwargs):
         context = {
+            'storage': self.storage,
             'cart': self.cart
         }
         return render(request, 'main/contact_us.html', context)
@@ -45,6 +48,7 @@ class CartView(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
         context = {
+            'storage': self.storage,
             'cart': self.cart,
         }
         return render(request, 'main/cart.html', context)
@@ -97,6 +101,17 @@ class ChangeQTYView(CartMixin, View):
         return HttpResponseRedirect('/cart/')
 
 
+class ChangeMonthsView(CartMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        cart = self.cart
+        cart.month = int(request.POST.get('months'))
+        cart.save()
+        recalc_cart(cart)
+        send_message('update_price', request)
+        return HttpResponseRedirect('/cart/')
+
+
 @login_required
 def edit_address(request):
     if request.method == 'POST':
@@ -117,6 +132,7 @@ def edit_account(request):
         customer.first_name = request.POST.get('first_name')
         customer.last_name = request.POST.get('last_name')
         customer.phone = request.POST.get('phone')
+        customer.email = request.POST.get('email')
         customer.save()
         send_message('edit_account', request)
         return redirect('account')
@@ -148,17 +164,19 @@ class AccountView(CartMixin, View):
     def get(self, request, *args, **kwargs):
         customer = Customer.objects.get(user=request.user)
         context = {
+            'storage': self.storage,
             'customer': customer,
             'cart': self.cart,
         }
         return render(request, 'main/account.html', context)
 
 
-class StaffView(View):
+class StaffView(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
         orders = Order.objects.all
         context = {
+            'storage': self.storage,
             'orders': orders,
 
         }
@@ -195,6 +213,7 @@ class Checkout(CartMixin, View):
         customer = Customer.objects.get(user=request.user)
         form = OrderForm(request.POST or None)
         context = {
+            'storage': self.storage,
             'customer': customer,
             'cart': self.cart,
             'form': form
@@ -213,13 +232,16 @@ class MakeOrderView(CartMixin, View):
             customer.first_name = form.cleaned_data['first_name']
             customer.last_name = form.cleaned_data['last_name']
             customer.phone = form.cleaned_data['phone']
+            customer.email = form.cleaned_data['email']
             customer.save()
             new_order.customer = customer
             new_order.first_name = form.cleaned_data['first_name']
             new_order.last_name = form.cleaned_data['last_name']
             new_order.phone = form.cleaned_data['phone']
-            new_order.order_date = form.cleaned_data['order_date']
+            new_order.email = form.cleaned_data['email']
+            new_order.order_start = form.cleaned_data['order_date']
             new_order.comment = form.cleaned_data['comment']
+            new_order.month = self.cart.month
             new_order.save()
             self.cart.in_order = True
             self.cart.save()
@@ -228,16 +250,18 @@ class MakeOrderView(CartMixin, View):
             customer.orders.add(new_order)
             send_message('new_order', request)
             return redirect('account')
+        send_message('fields', request)
         return HttpResponseRedirect('/checkout/')
 
 
-class RegisterUser(CreateView):
+class RegisterUser(CartMixin, CreateView):
     form_class = RegisterUserForm
     template_name = 'main/register.html'
     success_url = reverse_lazy('login')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['storage'] = self.storage
         return dict(list(context.items()))
 
     def form_valid(self, form):
@@ -246,12 +270,13 @@ class RegisterUser(CreateView):
         return redirect('home')
 
 
-class LoginUser(LoginView):
+class LoginUser(CartMixin, LoginView):
     form_class = LoginUserForm
     template_name = 'main/login.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['storage'] = self.storage
         return dict(list(context.items()))
 
     def get_success_url(self):

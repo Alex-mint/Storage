@@ -45,7 +45,7 @@
                                                            {% if order.status == 'new' %}
                                                             <tr>
                                                                 <td>{{ order.id }}</td>
-                                                                <td>{{ order.order_date|date:"d-m-Y" }}</td>
+                                                                <td>{{ order.order_start|date:"d-m-Y" }}</td>
                                                                 <td>{{ order.get_status_display }}</td>
                                                                 <td>{{ order.cart.final_price }}</td>
                                                                 <td><a href="{% url 'order_details' id=order.id %}" class="check-btn sqr-btn ">View</a></td>
@@ -79,7 +79,7 @@
                                                            {% if order.status == 'in_progress' %}
                                                             <tr>
                                                                 <td>{{ order.id }}</td>
-                                                                <td>{{ order.order_date|date:"d-m-Y" }}</td>
+                                                                <td>{{ order.order_start|date:"d-m-Y" }}</td>
                                                                 <td>{{ order.get_status_display }}</td>
                                                                 <td>{{ order.cart.final_price }}</td>
                                                                 <td><a href="{% url 'order_details' id=order.id %}" class="check-btn sqr-btn ">View</a></td>
@@ -114,7 +114,7 @@
                                                            {% if order.status == 'is_ready' %}
                                                             <tr>
                                                                 <td>{{ order.id }}</td>
-                                                                <td>{{ order.order_date|date:"d-m-Y" }}</td>
+                                                                <td>{{ order.order_start|date:"d-m-Y" }}</td>
                                                                 <td>{{ order.get_status_display }}</td>
                                                                 <td>{{ order.cart.final_price }}</td>
                                                                 <td><a href="{% url 'order_details' id=order.id %}" class="check-btn sqr-btn ">View</a></td>
@@ -149,7 +149,7 @@
                                                            {% if order.status == 'completed' %}
                                                             <tr>
                                                                 <td>{{ order.id }}</td>
-                                                                <td>{{ order.order_date|date:"d-m-Y" }}</td>
+                                                                <td>{{ order.order_start|date:"d-m-Y" }}</td>
                                                                 <td>{{ order.get_status_display }}</td>
                                                                 <td>{{ order.cart.final_price }}</td>
                                                                 <td><a href="{% url 'order_details' id=order.id %}" class="check-btn sqr-btn ">View</a></td>

@@ -67,10 +67,10 @@
                                                            {% for order in customer.orders.all %}
                                                             <tr>
                                                                 <td>{{ order.id }}</td>
-                                                                <td>{{ order.order_start|date:"d-m-Y" }}</td>
+                                                                <td>{{ order.created_at|date:"d-m-Y" }}</td>
                                                                 <td>{{ order.get_status_display }}</td>
                                                                 <td>{{ order.cart.final_price }}</td>
-                                                                <td><a href="cart.html" class="check-btn sqr-btn ">View</a></td>
+                                                                <td><a href="{% url 'order_cancel' id=order.id %}">Cancelar Pedido</a></td>
                                                             </tr>
                                                             {% endfor %}
 

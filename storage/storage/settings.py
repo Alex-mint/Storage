@@ -27,7 +27,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'main.apps.MainConfig'
+    'main.apps.MainConfig',
+    'emails.apps.EmailsConfig',
 ]
 
 MIDDLEWARE = [
@@ -113,6 +114,15 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'main/static'), )
+
+EMAIL_HOST = 'smtp.beget.com'
+#EMAIL_PORT = 2525
+EMAIL_HOST_USER = 'info@canary99.com'
+EMAIL_HOST_PASSWORD = 'Evv/1234567'
+EMAIL_USE_TLS = True
+
+FROM_EMAIL = 'info@canary99.com'
+EMAIL_ADMIN = 'shells4u@yandex.ru'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

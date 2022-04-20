@@ -22,6 +22,7 @@ class Storage(models.Model):
     lon = models.FloatField('longitud', blank=True, null=True)
     send_email_to_owner = models.BooleanField('Mandar email a dueño', default=False)
     send_email_to_customer = models.BooleanField('Mandar email a cliente', default=False)
+    main = models.BooleanField('Principal', default=False)
 
     def __str__(self):
         return self.name
@@ -31,6 +32,13 @@ class Storage(models.Model):
 
 
 class Item(models.Model):
+    storage = models.ForeignKey(
+        Storage, verbose_name='Almacén',
+        related_name='storage',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL
+    )
     title = models.CharField('Nombre', max_length=255)
     slug = models.SlugField(unique=True)
     image = models.ImageField('Imagen')
@@ -130,6 +138,7 @@ class Order(models.Model):
     email = models.CharField('Email', max_length=100)
     cart = models.ForeignKey(Cart, verbose_name='Pedido',
                              on_delete=models.CASCADE,
+                             related_name='related_cart',
                              null=True, blank=True)
     status = models.CharField(
         max_length=100,

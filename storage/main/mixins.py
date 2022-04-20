@@ -20,5 +20,5 @@ class CartMixin(View):
             if not cart:
                 cart = Cart.objects.create(for_anonymous_user=True)
         self.cart = cart
-        self.storage = Storage.objects.all()[0]  #1
+        self.storage = Storage.objects.filter(main=True).first()
         return super().dispatch(request, *args, **kwargs)

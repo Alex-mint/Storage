@@ -92,8 +92,6 @@ class ChangeQTYView(CartMixin, View):
             user=self.cart.owner, cart=self.cart, item=item
         )
         qty = int(request.POST.get('qty'))
-        month = int(request.POST.get('month'))
-        cart_product.month = month
         cart_product.qty = qty
         cart_product.save()
         recalc_cart(self.cart)
@@ -112,51 +110,72 @@ class ChangeMonthsView(CartMixin, View):
         return HttpResponseRedirect('/cart/')
 
 
-@login_required
 def edit_address(request):
-    if request.method == 'POST':
-        customer = Customer.objects.get(user=request.user)
-        customer.city = request.POST.get('city')
-        customer.street = request.POST.get('street')
-        customer.number = request.POST.get('number')
-        customer.save()
-        send_message('edit_address', request)
-        return redirect('account')
-    return render(request, 'main/account.html')
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            customer = Customer.objects.get(user=request.user)
+            customer.city = request.POST.get('city')
+            customer.street = request.POST.get('street')
+            customer.number = request.POST.get('number')
+            customer.save()
+            send_message('edit_address', request)
+            return redirect('account')
+        return render(request, 'main/account.html')
+    else:
+        return redirect('home')
 
 
-@login_required
 def edit_account(request):
-    if request.method == 'POST':
-        customer = Customer.objects.get(user=request.user)
-        customer.first_name = request.POST.get('first_name')
-        customer.last_name = request.POST.get('last_name')
-        customer.phone = request.POST.get('phone')
-        customer.email = request.POST.get('email')
-        customer.save()
-        send_message('edit_account', request)
-        return redirect('account')
-    return render(request, 'main/account.html')
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            customer = Customer.objects.get(user=request.user)
+            customer.first_name = request.POST.get('first_name')
+            customer.last_name = request.POST.get('last_name')
+            customer.phone = request.POST.get('phone')
+            customer.email = request.POST.get('email')
+            customer.save()
+            send_message('edit_account', request)
+            return redirect('account')
+        return render(request, 'main/account.html')
+    else:
+        return redirect('home')
 
 
-@login_required
 def edit_status(request, id):
-    if request.method == 'POST':
-        order = Order.objects.get(id=id)
-        order.status = request.POST.get('status')
-        order.save()
-        return redirect(f'/order-details/{id}')
-    return render(request, '/')
+    if request.user.is_staff:
+        if request.method == 'POST':
+            order = Order.objects.get(id=id)
+            order.status = request.POST.get('status')
+            order.save()
+            return redirect(f'/order-details/{id}')
+        return render(request, '/')
+    else:
+        return redirect('home')
 
 
-@login_required
 def edit_staff_comment(request, id):
-    if request.method == 'POST':
+    if request.user.is_staff:
+        if request.method == 'POST':
+            order = Order.objects.get(id=id)
+            order.staff_comment = request.POST.get('comment')
+            order.save()
+            return redirect(f'/order-details/{id}')
+        return render(request, '/')
+    else:
+        return redirect('home')
+
+
+
+def order_cancel(request, id):
+    if request.user.is_authenticated:
         order = Order.objects.get(id=id)
-        order.staff_comment = request.POST.get('comment')
-        order.save()
-        return redirect(f'/order-details/{id}')
-    return render(request, '/')
+        order.delete()
+        if request.user.is_staff:
+            return redirect('staff')
+        else:
+            return redirect('account')
+    else:
+        return redirect('home')
 
 
 class AccountView(CartMixin, View):
@@ -242,7 +261,6 @@ class MakeOrderView(CartMixin, View):
             new_order.order_start = form.cleaned_data['order_date']
             new_order.comment = form.cleaned_data['comment']
             new_order.month = self.cart.month
-            new_order.save()
             self.cart.in_order = True
             self.cart.save()
             new_order.cart = self.cart

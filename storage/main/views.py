@@ -9,7 +9,7 @@ from django.views import View
 from django.views.generic import CreateView
 
 from .forms import RegisterUserForm, LoginUserForm, OrderForm, AddImageForm, \
-    StatusForm
+    StatusForm, PageInfo
 from .mixins import CartMixin
 from .models import Item, CartProduct, Customer, Order, Image, Storage
 from .utils import recalc_cart, send_message
@@ -28,18 +28,22 @@ class Home(CartMixin, View):
 
 class AboutUs(CartMixin, View):
     def get(self, request, *args, **kwargs):
+        text = PageInfo.objects.filter(title_es='about').first()
         context = {
             'storage': self.storage,
-            'cart': self.cart
+            'cart': self.cart,
+            'text': text
         }
         return render(request, 'main/about_us.html', context)
 
 
 class ContactUs(CartMixin, View):
     def get(self, request, *args, **kwargs):
+        text = PageInfo.objects.filter(title_es='contacto').first()
         context = {
             'storage': self.storage,
-            'cart': self.cart
+            'cart': self.cart,
+            'text': text
         }
         return render(request, 'main/contact_us.html', context)
 

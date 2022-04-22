@@ -26,9 +26,9 @@
                                 <div class="col-lg-3 col-md-4">
                                     <div class="myaccount-tab-menu nav" role="tablist">
                                         <a href="#dashboad" class="active" data-bs-toggle="tab">Dashboard</a>
-                                        <a href="#orders" data-bs-toggle="tab">Orders</a>
-                                        <a href="#address-edit" data-bs-toggle="tab">Address</a>
-                                        <a href="#account-info" data-bs-toggle="tab">Account Details</a>
+                                        <a href="#orders" data-bs-toggle="tab">Pedidos</a>
+                                        <a href="#address-edit" data-bs-toggle="tab">Dirección</a>
+                                        <a href="#account-info" data-bs-toggle="tab">Detalles de Account</a>
                                         <a href="{% url 'logout' %}">Salir</a>
                                     </div>
                                 </div>
@@ -51,7 +51,7 @@
                                         <!-- Single Tab Content Start -->
                                         <div class="tab-pane fade" id="orders" role="tabpanel">
                                             <div class="myaccount-content">
-                                                <h3>Orders</h3>
+                                                <h3>Pedidos</h3>
                                                 <div class="myaccount-table table-responsive text-center">
                                                     <table class="table table-bordered">
                                                         <thead class="thead-light">
@@ -70,7 +70,7 @@
                                                                 <td>{{ order.created_at|date:"d-m-Y" }}</td>
                                                                 <td>{{ order.get_status_display }}</td>
                                                                 <td>{{ order.cart.final_price }}</td>
-                                                                <td><a href="{% url 'order_cancel' id=order.id %}">Cancelar Pedido</a></td>
+                                                                <td><a href="{% url 'order_view' id=order.id %}">Ver Pedido</a></td>
                                                             </tr>
                                                             {% endfor %}
 
@@ -84,7 +84,7 @@
                                         <!-- Single Tab Content Start -->
                                         <div class="tab-pane fade" id="address-edit" role="tabpanel">
                                             <div class="myaccount-content">
-                                                <h3>Address</h3>
+                                                <h3>Dirección</h3>
                                                 <address>
                                                     <p><strong>{{ customer.user.username}}</strong></p>
 
@@ -101,15 +101,15 @@
 																                    <form action="{% url 'edit_address' %}" method="POST">
 										                                   {% csrf_token %}
 																				                <div class="sin-checkout-login">
-																                            <label>City <abbr class="required" title="required">*</abbr></label>
+																                            <label>Ciudad <abbr class="required" title="required">*</abbr></label>
 																                            <input class="form-control" name="city"  type="text" value="{{ customer.city }}">
 																                        </div>
 																												<div class="sin-checkout-login">
-																                            <label>Street <abbr class="required" title="required">*</abbr></label>
+																                            <label>Calle <abbr class="required" title="required">*</abbr></label>
 																                            <input class="form-control" name="street"  type="text" value="{{ customer.street }}">
 																                        </div>
 																												<div class="sin-checkout-login">
-																                            <label>Number <abbr class="required" title="required">*</abbr></label>
+																                            <label>Numero <abbr class="required" title="required">*</abbr></label>
 																                            <input class="form-control" name="number"  type="text" value="{{ customer.number }}">
 																                        </div>
 																		                    <div class="button-remember-wrap">
@@ -126,7 +126,7 @@
                                         <!-- Single Tab Content Start -->
                                         <div class="tab-pane fade" id="account-info" role="tabpanel">
 		                                        <div class="myaccount-content">
-                                                <h3>Account Details</h3>
+                                                <h3>Detalles de Account</h3>
                                                 <address>
                                                     <p><strong>{{ customer.user.username}}</strong></p>
 

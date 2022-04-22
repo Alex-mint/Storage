@@ -77,12 +77,9 @@
                                             <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200">
                                                 <div class="product-img img-zoom mb-25">
                                                     <a href="product-details.html">
-                                                        <!--  <img src="{% static 'assets/images/product/product-4.png' %}" alt=""> -->
-                                                        <img src="{{product.image.url}}" alt="">
+                                                        <img src="{{product.image.url}}" alt="{{product.title}}">
                                                     </a>
-                                                    <div class="product-badge badge-top badge-right badge-pink">
-                                                        <span>-10%</span>
-                                                    </div>
+
                                                     <div class="product-action-wrap">
 
                                                         <button class="product-action-btn-1" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal-{{product.id}}">
@@ -94,16 +91,16 @@
                                                     </div>
                                                     <div class="product-action-2-wrap">
 		                                                    {% if request.user.is_authenticated %}
-				                                                <a href="{% url 'add_to_cart' slug=product.slug %}" class="product-action-btn-2"  title="Add To Cart"><i class="pe-7s-cart"></i>Add to cart</a>
+				                                                <a href="{% url 'add_to_cart' slug=product.slug %}" class="product-action-btn-2"  title="AAñadir al Pedido"><i class="pe-7s-cart"></i>Añadir al Pedido</a>
 		                                                    {% else %}
-				                                                <a href="" class="product-action-btn-2"  title="Add To Cart"><i class="pe-7s-cart"></i>Add to cart</a>
+				                                                <a href="" class="product-action-btn-2"  title="Añadir al Pedido"><i class="pe-7s-cart"></i>Añadir al Pedido</a>
 		                                                    {% endif %}
                                                     </div>
                                                 </div>
                                                 <div class="product-content">
-                                                    <h3><a href="product-details.html">{{product.title}}</a></h3>
+                                                    <h3>{{product.title}}</h3>
                                                     <div class="product-price">
-                                                        <span>{{product.price}}€ </span>
+                                                        <span>{{product.price}}€ por mes</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -127,26 +124,10 @@
 																                                <div class="product-details-content quickview-content">
 																                                    <h2>{{product.title}}</h2>
 																                                    <div class="product-details-price">
-																                                        <span>{{product.price}}€ </span>
+																                                        <span>{{product.price}}€ al mes(30 dias)</span>
 																                                    </div>
-																                                    <div class="product-details-review">
-																                                        <div class="product-rating">
-																                                            <i class=" ti-star"></i>
-																                                            <i class=" ti-star"></i>
-																                                            <i class=" ti-star"></i>
-																                                            <i class=" ti-star"></i>
-																                                            <i class=" ti-star"></i>
-																                                        </div>
-																                                        <span>( 1 Customer Review )</span>
-																                                    </div>
-																                                    <div class="product-color product-color-active product-details-color">
-																                                        <span>Color :</span>
-																                                        <ul>
-																                                            <li><a title="Pink" class="pink" href="#">pink</a></li>
-																                                            <li><a title="Yellow" class="active yellow" href="#">yellow</a></li>
-																                                            <li><a title="Purple" class="purple" href="#">purple</a></li>
-																                                        </ul>
-																                                    </div>
+
+
 																                                    <p>{{ product.description}}</p>
 																                                    <div class="product-details-action-wrap">
 																                                        <div class="single-product-cart btn-hover">

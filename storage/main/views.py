@@ -47,11 +47,14 @@ class ContactUs(CartMixin, View):
 class CartView(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
-        context = {
-            'storage': self.storage,
-            'cart': self.cart,
-        }
-        return render(request, 'main/cart.html', context)
+        if request.user.is_authenticated:
+            context = {
+                'storage': self.storage,
+                'cart': self.cart,
+            }
+            return render(request, 'main/cart.html', context)
+        else:
+            return redirect('home')
 
 
 class AddToCartView(CartMixin, View):
@@ -170,6 +173,7 @@ def order_cancel(request, id):
     if request.user.is_authenticated:
         order = Order.objects.get(id=id)
         order.delete()
+        send_message('cancel', request)
         if request.user.is_staff:
             return redirect('staff')
         else:
@@ -181,63 +185,85 @@ def order_cancel(request, id):
 class AccountView(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
-        customer = Customer.objects.get(user=request.user)
-        context = {
-            'storage': self.storage,
-            'customer': customer,
-            'cart': self.cart,
-        }
-        return render(request, 'main/account.html', context)
+        if request.user.is_authenticated:
+            customer = Customer.objects.get(user=request.user)
+            context = {
+                'storage': self.storage,
+                'customer': customer,
+                'cart': self.cart,
+            }
+            return render(request, 'main/account.html', context)
+        else:
+            return redirect('home')
 
 
 class StaffView(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
-        orders = Order.objects.all
-        context = {
-            'storage': self.storage,
-            'orders': orders,
-
-        }
-        return render(request, 'main/staff.html', context)
+        if request.user.is_staff:
+            orders = Order.objects.all
+            context = {
+                'storage': self.storage,
+                'orders': orders,
+            }
+            return render(request, 'main/staff.html', context)
+        else:
+            return redirect('home')
 
 
 def order_detail(request, id):
-    order = get_object_or_404(Order, id=id)
-    form = AddImageForm(request.POST, request.FILES)
-    if request.method == 'POST':
-        if form.is_valid():
-            Image.objects.create(
-                order=get_object_or_404(Order, id=id),
-                image=request.FILES.get('image')
-            )
-            return redirect(f'/order-details/{id}')
-    else:
-        form = AddImageForm()
-    context = {
-        'order': order,
-        'first_image': order.images.all()[:1],
-        'images': [image.image.url for image in order.images.all()[1:]],
-        'all_images': [image.image.url for image in order.images.all()],
-        'form': form,
-        'status_form': StatusForm(request.POST)
-    }
+    if request.user.is_staff:
+        order = get_object_or_404(Order, id=id)
+        form = AddImageForm(request.POST, request.FILES)
+        if request.method == 'POST':
+            if form.is_valid():
+                Image.objects.create(
+                    order=get_object_or_404(Order, id=id),
+                    image=request.FILES.get('image')
+                )
+                return redirect(f'/order-details/{id}')
+        else:
+            form = AddImageForm()
+        context = {
+            'order': order,
+            'first_image': order.images.all()[:1],
+            'images': [image.image.url for image in order.images.all()[1:]],
+            'all_images': [image.image.url for image in order.images.all()],
+            'form': form,
+            'status_form': StatusForm(request.POST)
+        }
 
-    return render(request, 'main/order-details.html', context=context)
+        return render(request, 'main/order-details.html', context=context)
+    else:
+        return redirect('home')
+
+
+def order_view(request, id):
+    if request.user.is_authenticated:
+        order = get_object_or_404(Order, id=id)
+        context = {
+            'order': order,
+        }
+        return render(request, 'main/order-view.html', context=context)
+    else:
+        return redirect('home')
 
 
 class Checkout(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
-        customer = Customer.objects.get(user=request.user)
-        form = OrderForm(request.POST or None)
-        context = {
-            'storage': self.storage,
-            'customer': customer,
-            'cart': self.cart,
-            'form': form
-        }
-        return render(request, 'main/checkout.html', context)
+        if request.user.is_authenticated:
+            customer = Customer.objects.get(user=request.user)
+            form = OrderForm(request.POST or None)
+            context = {
+                'storage': self.storage,
+                'customer': customer,
+                'cart': self.cart,
+                'form': form
+            }
+            return render(request, 'main/checkout.html', context)
+        else:
+            return redirect('home')
 
 
 class MakeOrderView(CartMixin, View):
@@ -252,14 +278,11 @@ class MakeOrderView(CartMixin, View):
             customer.last_name = form.cleaned_data['last_name']
             customer.phone = form.cleaned_data['phone']
             customer.email = form.cleaned_data['email']
+            customer.city = form.cleaned_data['city']
+            customer.street = form.cleaned_data['street']
+            customer.number = form.cleaned_data['number']
             customer.save()
             new_order.customer = customer
-            new_order.first_name = form.cleaned_data['first_name']
-            new_order.last_name = form.cleaned_data['last_name']
-            new_order.phone = form.cleaned_data['phone']
-            new_order.email = form.cleaned_data['email']
-            new_order.order_start = form.cleaned_data['order_date']
-            new_order.comment = form.cleaned_data['comment']
             new_order.month = self.cart.month
             self.cart.in_order = True
             self.cart.save()

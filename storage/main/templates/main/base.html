@@ -65,16 +65,29 @@
                             <div class="language-currency-wrap">
 
                                 <div class="language-wrap">
-                                    <a class="language-active" href="#"><img src="assets/images/icon-img/flag.png" alt=""> English <i class=" ti-angle-down "></i></a>
+                                    <a class="language-active" href="#">
+		                                    <img src="{% static 'images/es.png' %}" width="20px" alt="es">
+																        <img src="{% static 'images/gb.png' %}" width="20px" alt="en">
+																        <img src="{% static 'images/de.png' %}" width="20px" alt="de">
+		                                    <i class=" ti-angle-down "></i></a>
                                     <div class="language-dropdown">
                                         <ul>
-                                            <li><a href="#"><img src="assets/images/icon-img/flag.png" alt="">English </a></li>
-                                            <li><a href="#"><img src="assets/images/icon-img/spanish.png" alt="">Spanish</a></li>
-                                            <li><a href="#"><img src="assets/images/icon-img/arabic.png" alt="">Arabic </a></li>
+                                            {% get_current_language as LANGUAGE_CODE %}
+																            {% get_available_languages as LANGUAGES %}
+																            {% get_language_info_list for LANGUAGES as languages %}
+
+																            {% for lang in languages %}
+																		              <li>
+																		              <a class="dropdown-item" href="/{{ lang.code }}/">
+																		                  {{ lang.name_local }}
+																		              </a>
+																		              </li>
+																            {% endfor %}
                                         </ul>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -94,7 +107,6 @@
 
                                         <li><a href="{% url 'home' %}">{% trans 'INICIO' %}</a></li>
                                         <li><a href="{% url 'about_us' %}">{% trans 'QUIEN SOMOS' %}</a></li>
-                                        <li><a href="{% url 'contact_us' %}">{% trans 'CONTACTO' %}</a></li>
 
 		                                    {% if request.user.is_authenticated %}
 
@@ -150,7 +162,7 @@
                 <div class="container">
                     <div class="footer-top pt-80 pb-35">
                         <div class="row">
-                            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                                 <div class="footer-widget footer-about mb-40">
                                     <div class="footer-logo">
                                         <a href="{% url 'home' %}"><img src="{% static 'assets/images/logo/logo.png' %}" alt="logo"></a>
@@ -161,33 +173,27 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                                 <div class="footer-widget footer-widget-margin-1 footer-list mb-40">
-                                    <h3 class="footer-title">Information</h3>
+		                                <h3 class="footer-title">Informacion</h3>
                                     <ul>
-                                        <li><a href="about-us.html">About Us</a></li>
-                                        <li><a href="#">Delivery Information</a></li>
-                                        <li><a href="#">Privacy Policy</a></li>
-                                        <li><a href="#">Terms & Conditions</a></li>
-                                        <li><a href="#">Customer Service</a></li>
+                                        <li><a href="{% url 'home' %}">Inicio</a></li>
+                                        <li><a href="{% url 'about_us' %}">Quien somos</a></li>
+                                        <li><a href="{% url 'contact_us' %}">Contacto</a></li>
+                                        {% if request.user.is_authenticated %}
+																						<li><a href="{% url 'account' %}">{% trans 'Mis Pedidos' %}</a></li>
+																				{% else %}
+																						<li><a href="{% url 'register' %}">{% trans 'Registrarme' %}</a></li>
+																						<li><a href="{% url 'login' %}">{% trans 'Acceder' %}</a></li>
+
+																				{% endif %}
                                     </ul>
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-md-6 col-sm-6 col-12">
-                                <div class="footer-widget footer-list mb-40">
-                                    <h3 class="footer-title">My Accound</h3>
-                                    <ul>
-                                        <li><a href="my-account.html">My Account</a></li>
-                                        <li><a href="#">Order History</a></li>
-                                        <li><a href="wishlist.html">Wish List</a></li>
-                                        <li><a href="#">Newsletter</a></li>
-                                        <li><a href="#">Order History</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                                 <div class="footer-widget footer-widget-margin-2 footer-address mb-40">
-                                    <h3 class="footer-title">Get in touch</h3>
+		                                <h3 class="footer-title">Donde Estamos</h3>
                                     <ul>
                                         <li><span>Address: </span>Your address goes here </li>
                                         <li><span>Telephone Enquiry:</span> (012) 345 6789</li>
@@ -206,7 +212,7 @@
             <div class="bg-gray-3">
                 <div class="container">
                     <div class="footer-bottom copyright text-center bg-gray-3">
-                        <p>Copyright ©2021 All rights reserved | Made with <i class="fa fa-heart"></i> by <a href="https://hasthemes.com/"> HasThemes</a>.</p>
+                        <p>Copyright ©2022 All rights reserved</p>
                     </div>
                 </div>
             </div>
@@ -239,23 +245,27 @@
                     </div>
                 </div>
                 <div class="language-currency-wrap language-currency-wrap-modify">
-                    <div class="currency-wrap border-style">
-                        <a class="currency-active" href="#">$ Dollar (US) <i class=" ti-angle-down "></i></a>
-                        <div class="currency-dropdown">
-                            <ul>
-                                <li><a href="#">Taka (BDT) </a></li>
-                                <li><a href="#">Riyal (SAR) </a></li>
-                                <li><a href="#">Rupee (INR) </a></li>
-                            </ul>
-                        </div>
-                    </div>
+
                     <div class="language-wrap">
-                        <a class="language-active" href="#"><img src="assets/images/icon-img/flag.png" alt=""> English <i class=" ti-angle-down "></i></a>
+                        <a class="language-active" href="#">
+		                        <img src="{% static 'images/es.png' %}" width="20px" alt="es">
+														<img src="{% static 'images/gb.png' %}" width="20px" alt="en">
+														<img src="{% static 'images/de.png' %}" width="20px" alt="de">
+		                        <i class=" ti-angle-down "></i>
+                        </a>
                         <div class="language-dropdown">
                             <ul>
-                                <li><a href="#"><img src="assets/images/icon-img/flag.png" alt="">English </a></li>
-                                <li><a href="#"><img src="assets/images/icon-img/spanish.png" alt="">Spanish</a></li>
-                                <li><a href="#"><img src="assets/images/icon-img/arabic.png" alt="">Arabic </a></li>
+                                {% get_current_language as LANGUAGE_CODE %}
+																{% get_available_languages as LANGUAGES %}
+																{% get_language_info_list for LANGUAGES as languages %}
+
+																    {% for lang in languages %}
+																		    <li>
+																		       <a class="dropdown-item" href="/{{ lang.code }}/">
+																		          {{ lang.name_local }}
+																		       </a>
+																		    </li>
+																    {% endfor %}
                             </ul>
                         </div>
                     </div>

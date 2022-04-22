@@ -81,7 +81,8 @@
 														        </form>
 																</div>
 				                    </div>
-		                        <form action="" method="post" enctype="multipart/form-data">
+				                    <div col-lg-6>
+		                               <form action="" method="post" enctype="multipart/form-data">
 																		    {% csrf_token %}
 																		    <div class="form-error">{{ form.non_field_errors }}</div>
 																				{% for f in form %}
@@ -90,6 +91,7 @@
 																				{% endfor %}
 																		        <button class="btn btn-outline-success" type="submit">Añadir</button>
 																		</form>
+		                        </div>
 		                        <div class="product-details-meta">
                                 <ul>
                                     <li><span class="title">Nombre:</span> {{ order.first_name }}</li>

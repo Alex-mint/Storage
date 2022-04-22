@@ -17,41 +17,27 @@
 
 <div class="checkout-main-area pb-100 pt-100">
             <div class="container">
-                <div class="customer-zone mb-20">
-                    <p class="cart-page-title">Have a coupon? <a class="checkout-click3" href="#">Click here to enter your code</a></p>
-                    <div class="checkout-login-info3">
-                        <form action="#">
-                            <input type="text" placeholder="Coupon code">
-                            <input type="submit" value="Apply Coupon">
-                        </form>
-                    </div>
-                </div>
+
                 <div class="checkout-wrap pt-30">
                     <div class="row">
                         <div class="col-lg-7">
                             <div class="billing-info-wrap">
 
-                                <h3>Billing Details</h3>
+                                <h3>Detalles de Pedido</h3>
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="billing-info mb-20">
                                             <form action="{% url 'make_order' %}" method="POST">
 																									{% csrf_token %}
-																						<!--		<div class="form-error">{{ form.non_field_errors }}</div>
-
-
-																						<p><label class="" for="{{ f.id_for_label }}">{{f.label}} </label><input class="form-control" name="number"  type="text" value="{{ customer.number }}"></p>
-																						<div class="form-error">{{ f.errors }}</div>  -->
-
 		                                            <div class="col-lg-12">
                                         <div class="billing-info mb-20">
-                                            <label>First Name <abbr class="required" title="required">*</abbr></label>
+                                            <label>Nombre <abbr class="required" title="required">*</abbr></label>
                                             <input class="form-control" name="first_name"  type="text" value="{{ customer.first_name }}">
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="billing-info mb-20">
-                                            <label>Last Name <abbr class="required" title="required">*</abbr></label>
+                                            <label>Apellidos <abbr class="required" title="required">*</abbr></label>
                                             <input class="form-control" name="last_name"  type="text" value="{{ customer.last_name }}">
                                         </div>
                                     </div>
@@ -69,19 +55,19 @@
                                     </div>
 		                                <div class="col-lg-12">
                                         <div class="billing-info mb-20">
-                                            <label>City <abbr class="required" title="required">*</abbr></label>
+                                            <label>Ciudad <abbr class="required" title="required">*</abbr></label>
 																            <input class="form-control" name="city"  type="text" value="{{ customer.city }}">
                                         </div>
                                     </div>
 		                                <div class="col-lg-12">
                                         <div class="billing-info mb-20">
-                                            <label>Street <abbr class="required" title="required">*</abbr></label>
+                                            <label>SCalle <abbr class="required" title="required">*</abbr></label>
 																                            <input class="form-control" name="street"  type="text" value="{{ customer.street }}">
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="billing-info mb-20">
-                                            <label>Number <abbr class="required" title="required">*</abbr></label>
+                                            <label>Numero <abbr class="required" title="required">*</abbr></label>
 																            <input class="form-control" name="number"  type="text" value="{{ customer.number }}">
                                         </div>
                                     </div>
@@ -91,14 +77,15 @@
 																            <p>{{ form.order_date}}</p>
                                         </div>
                                     </div>
-		                                <div class="col-lg-12">
-                                        <textarea name="message" placeholder="Message"></textarea>
+		                                <div class="col-lg-8">
+                                        <div class="billing-info mb-20">
+                                            <label>Comentario <abbr class="required" title="required">*</abbr></label>
+																            <p>{{ form.comment}}</p>
+                                        </div>
                                     </div>
+                                            <hr>
 
-
-																								<hr>
-
-																								<button class="btn btn-outline-dark" type="submit">{% trans 'Reservar' %}</button>
+																								<button class="btn btn-outline-dark" type="submit">{% trans 'Continuar' %}</button>
 																						</form>
 
                                         </div>
@@ -109,12 +96,12 @@
                         </div>
                         <div class="col-lg-5">
                             <div class="your-order-area">
-                                <h3>Your order</h3>
+                                <h3>Su Pedido</h3>
                                 <div class="your-order-wrap gray-bg-4">
                                     <div class="your-order-info-wrap">
                                         <div class="your-order-info">
                                             <ul>
-                                                <li>Product <span>Total</span></li>
+                                                <li>Producto <span>Total</span></li>
                                             </ul>
                                         </div>
                                         <div class="your-order-middle">
@@ -127,14 +114,14 @@
                                         </div>
                                         <div class="your-order-info order-subtotal">
                                             <ul>
-                                                <li>Total x {{ cart.month }} meses<span>{{cart.final_price|floatformat:2}}€ </span></li>
+                                                <li><span>Total x {{ cart.month }} meses {{cart.final_price|floatformat:2}}€ </span></li>
                                             </ul>
                                         </div>
                                     </div>
 
                                 </div>
                                 <div class="Place-order btn-hover">
-                                    <a href="{% url 'cart' %}">&#x2190; Back to Cart</a>
+                                    <a href="{% url 'cart' %}">&#x2190; Volver</a>
                                 </div>
 
                             </div>

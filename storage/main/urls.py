@@ -8,6 +8,7 @@ urlpatterns = [
     path('about-us', views.AboutUs.as_view(), name='about_us'),
     path('contact-us', views.ContactUs.as_view(), name='contact_us'),
     path('order-details/<int:id>', views.order_detail, name='order_details'),
+    path('order-view/<int:id>', views.order_view, name='order_view'),
     path('order-cancel/<int:id>', views.order_cancel, name='order_cancel'),
     path('edit-status/<int:id>', views.edit_status, name='edit_status'),
     path('edit-months/<int:id>', views.ChangeMonthsView.as_view(), name='edit_months'),

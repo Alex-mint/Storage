@@ -7,11 +7,11 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #path('i18n/', include('django.conf.urls.i18n')),
-    path('', include('main.urls')),
+    path('i18n/', include('django.conf.urls.i18n')),
+    #path('', include('main.urls')),
 ]
 
-#urlpatterns += i18n_patterns(path('', include('apartments.urls')),)
+urlpatterns += i18n_patterns(path('', include('main.urls')),)
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

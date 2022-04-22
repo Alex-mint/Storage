@@ -99,6 +99,7 @@ class Customer(models.Model):
     last_name = models.CharField('Apellidos', max_length=255, null=True, blank=True)
     email = models.CharField('Email', max_length=10, null=True, blank=True)
     orders = models.ManyToManyField('Order', verbose_name='Pedidos',
+                                    null = True, blank = True,
                                     related_name='related_order')
 
     def __str__(self):
@@ -196,3 +197,14 @@ class PageMessage(models.Model):
 
     class Meta(object):
         verbose_name = "Mensaje"
+
+
+class PageInfo(models.Model):
+    title = models.CharField('Nombre', max_length=255, default='info')
+    info = models.TextField()
+
+    def __str__(self):
+        return self.title
+
+    class Meta(object):
+        verbose_name = "Info"

@@ -23,10 +23,10 @@
                                         <thead>
                                             <tr>
 		                                            <th class="width-thumbnail"></th>
-                                                <th class="width-thumbnail">Product</th>
-                                                <th class="width-price"> Price</th>
-                                                <th class="width-quantity">Quantity</th>
-		                                            <th class="width-thumbnail">Action</th>
+                                                <th class="width-thumbnail">Producto</th>
+                                                <th class="width-price"> Pricio</th>
+                                                <th class="width-quantity">Cantidad</th>
+		                                            <th class="width-thumbnail">Actualizar precio</th>
                                                 <th class="width-subtotal">Subtotal</th>
                                                 <th class="width-remove"></th>
                                             </tr>
@@ -50,7 +50,7 @@
 		                                                  </td>
 
 		                                            <td class="cart-quality">
-                                                     <input type="submit" class="cart-clear btn-hover" value="Изменить кол-во">
+                                                     <input type="submit" class="cart-clear btn-hover" value="Actualizar">
                                                     </form>
 
 
@@ -73,8 +73,8 @@
                                                 <th class="width-price"></th>
                                                 <th class="width-quantity"></th>
                                                 <th class="width-quantity"></th>
-		                                            <th class="width-thumbnail">Months</th>
-                                                <th class="width-subtotal">Action</th>
+		                                            <th class="width-thumbnail">Meses</th>
+                                                <th class="width-subtotal">Actualizar precio</th>
                                                 <th class="width-remove"></th>
                                             </tr>
                                         </thead>
@@ -95,7 +95,7 @@
                                                      <input type="number" class="form-control" name="months" style="width: 70px;" min="1" value="{{ cart.month }}">
 		                                                  </td>
 		                                            <td class="cart-quality">
-                                                     <input type="submit" class="cart-clear btn-hover" value="Изменить кол-во">
+                                                     <input type="submit" class="cart-clear btn-hover" value="Actualizar">
                                                     </form>
 		                                            </td
 
@@ -124,11 +124,11 @@
                                 <div class="col-lg-12">
                                     <div class="cart-shiping-update-wrapper">
                                         <div class="cart-shiping-update btn-hover">
-                                            <a href="{% url 'home' %}">Continue Shopping</a>
+                                            <a href="{% url 'home' %}">&#x2190; Volver</a>
                                         </div>
                                         <div class="cart-clear-wrap">
                                             <div class="cart-clear btn-hover">
-                                                <a href="{% url 'checkout' %}">Checkout</a>
+                                                <a href="{% url 'checkout' %}">Continuar</a>
                                             </div>
                                         </div>
                                     </div>

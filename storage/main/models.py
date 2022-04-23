@@ -91,15 +91,15 @@ class Customer(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
                                 verbose_name='Usuario',
                                 on_delete=models.CASCADE)
-    phone = models.CharField('telefono', max_length=20, null=True, blank=True)
-    city = models.CharField('Ciudad', max_length=100, null=True, blank=True)
-    street = models.CharField('Calle', max_length=100, null=True, blank=True)
-    number = models.CharField('Numero', max_length=10, null=True, blank=True)
-    first_name = models.CharField('Nombre', max_length=255, null=True, blank=True)
-    last_name = models.CharField('Apellidos', max_length=255, null=True, blank=True)
-    email = models.CharField('Email', max_length=10, null=True, blank=True)
+    phone = models.CharField('telefono', max_length=20, default='')
+    city = models.CharField('Ciudad', max_length=100, default='')
+    street = models.CharField('Calle', max_length=100, default='')
+    number = models.CharField('Numero', max_length=10, default='')
+    first_name = models.CharField('Nombre', max_length=255, default='')
+    last_name = models.CharField('Apellidos', max_length=255, default='')
+    email = models.CharField('Email', max_length=10, default='')
     orders = models.ManyToManyField('Order', verbose_name='Pedidos',
-                                    null = True, blank = True,
+                                    null=True, blank=True,
                                     related_name='related_order')
 
     def __str__(self):

@@ -107,7 +107,7 @@
 				                        <hr>
 				                        <ul>
 						                        {% for item in order.cart.products.all %}
-		                                    <li><span class="title">{{item.qty}}x{{item.item.title}}</span> {{item.month}} meses</li>
+		                                    <li><span class="title">{{item.qty}}x{{item.item.title}}</span> {{order.month}} meses</li>
 		                                {% endfor %}
 				                        </ul>
 				                        <div class="cart-shiping-update-wrapper">

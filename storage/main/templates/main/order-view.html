@@ -17,7 +17,7 @@
 		                        <div class="product-details-meta">
                                <ul>
 						                        {% for item in order.cart.products.all %}
-		                                    <li><span class="title">{{item.qty}}x{{item.item.title}}</span> {{item.month}} meses</li>
+		                                    <li><span class="title">{{item.qty}}x{{item.item.title}}</span> {{order.month}} meses</li>
 		                                {% endfor %}
                                     <li></li>
                                     <li><span class="title">Pedido Creado:</span> {{ order.created_at|date:"d-m-Y" }}</li>

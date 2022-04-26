@@ -25,11 +25,11 @@
                             <div class="row">
                                 <div class="col-lg-3 col-md-4">
                                     <div class="myaccount-tab-menu nav" role="tablist">
-                                        <a href="#dashboad" class="active" data-bs-toggle="tab">Dashboard</a>
-                                        <a href="#orders" data-bs-toggle="tab">Pedidos</a>
-                                        <a href="#address-edit" data-bs-toggle="tab">Dirección</a>
-                                        <a href="#account-info" data-bs-toggle="tab">Detalles de Account</a>
-                                        <a href="{% url 'logout' %}">Salir</a>
+                                        <a href="#dashboad" class="active" data-bs-toggle="tab">{% trans 'Panel de control' %}</a>
+                                        <a href="#orders" data-bs-toggle="tab">{% trans 'Pedidos' %}</a>
+                                        <a href="#address-edit" data-bs-toggle="tab">{% trans 'Dirección' %}</a>
+                                        <a href="#account-info" data-bs-toggle="tab">{% trans 'Detalles de su cuenta' %}</a>
+                                        <a href="{% url 'logout' %}">{% trans 'Salir' %}</a>
                                     </div>
                                 </div>
                                 <!-- My Account Tab Menu End -->
@@ -39,12 +39,12 @@
                                         <!-- Single Tab Content Start -->
                                         <div class="tab-pane fade show active" id="dashboad" role="tabpanel">
                                             <div class="myaccount-content">
-                                                <h3>Dashboard</h3>
+                                                <h3>{% trans 'Panel de control' %}</h3>
                                                 <div class="welcome">
-                                                    <p>Hello, <strong>{{ customer.user.username}}</strong></p>
+                                                    <p>{% trans 'Hola' %}, <strong>{{ customer.user.username}}</strong></p>
                                                 </div>
 
-                                                <p class="mb-0">From your account dashboard. you can easily check & view your recent orders, manage your shipping and billing addresses and edit your password and account details.</p>
+                                                <p class="mb-0">{{ text.text}}</p>
                                             </div>
                                         </div>
                                         <!-- Single Tab Content End -->
@@ -56,11 +56,11 @@
                                                     <table class="table table-bordered">
                                                         <thead class="thead-light">
                                                             <tr>
-                                                                <th>Order ID</th>
-                                                                <th>Date</th>
+                                                                <th>ID</th>
+                                                                <th>{% trans 'Fecha' %}</th>
                                                                 <th>Status</th>
                                                                 <th>Total</th>
-                                                                <th>Action</th>
+                                                                <th></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -70,7 +70,7 @@
                                                                 <td>{{ order.created_at|date:"d-m-Y" }}</td>
                                                                 <td>{{ order.get_status_display }}</td>
                                                                 <td>{{ order.cart.final_price }}</td>
-                                                                <td><a href="{% url 'order_view' id=order.id %}">Ver Pedido</a></td>
+                                                                <td><a href="{% url 'order_view' id=order.id %}">{% trans 'Ver Pedido' %}</a></td>
                                                             </tr>
                                                             {% endfor %}
 
@@ -84,7 +84,7 @@
                                         <!-- Single Tab Content Start -->
                                         <div class="tab-pane fade" id="address-edit" role="tabpanel">
                                             <div class="myaccount-content">
-                                                <h3>Dirección</h3>
+                                                <h3>{% trans 'Dirección' %}</h3>
                                                 <address>
                                                     <p><strong>{{ customer.user.username}}</strong></p>
 
@@ -95,25 +95,25 @@
 
 
 		                                            <div class="mb-20">
-														                    <p class="cart-page-title"><a class="checkout-click1" href="#"><i class="fa fa-edit"></i> Edit Address</a></p>
+														                    <p class="cart-page-title"><a class="checkout-click1" href="#"><i class="fa fa-edit"></i>{% trans 'Editar Dirección' %}</a></p>
 														                    <div class="checkout-login-info">
                                                     <br>
 																                    <form action="{% url 'edit_address' %}" method="POST">
 										                                   {% csrf_token %}
 																				                <div class="sin-checkout-login">
-																                            <label>Ciudad <abbr class="required" title="required">*</abbr></label>
+																                            <label>{% trans 'Ciudad' %} <abbr class="required" title="required">*</abbr></label>
 																                            <input class="form-control" name="city"  type="text" value="{{ customer.city }}">
 																                        </div>
 																												<div class="sin-checkout-login">
-																                            <label>Calle <abbr class="required" title="required">*</abbr></label>
+																                            <label>{% trans 'Calle' %} <abbr class="required" title="required">*</abbr></label>
 																                            <input class="form-control" name="street"  type="text" value="{{ customer.street }}">
 																                        </div>
 																												<div class="sin-checkout-login">
-																                            <label>Numero <abbr class="required" title="required">*</abbr></label>
+																                            <label>{% trans 'Numero' %} <abbr class="required" title="required">*</abbr></label>
 																                            <input class="form-control" name="number"  type="text" value="{{ customer.number }}">
 																                        </div>
 																		                    <div class="button-remember-wrap">
-														                                <button class="button" type="submit">Guardar</button>
+														                                <button class="button" type="submit">{% trans 'Guardar' %}</button>
 														                            </div>
 										                                </form>
 
@@ -126,7 +126,7 @@
                                         <!-- Single Tab Content Start -->
                                         <div class="tab-pane fade" id="account-info" role="tabpanel">
 		                                        <div class="myaccount-content">
-                                                <h3>Detalles de Account</h3>
+                                                <h3>{% trans 'Detalles de su cuenta' %}</h3>
                                                 <address>
                                                     <p><strong>{{ customer.user.username}}</strong></p>
 
@@ -139,22 +139,22 @@
 
 
 		                                            <div class="mb-20">
-														                    <p class="cart-page-title"><a class="checkout-click1" href="#"><i class="fa fa-edit"></i> Edit Account</a></p>
+														                    <p class="cart-page-title"><a class="checkout-click1" href="#"><i class="fa fa-edit"></i> {% trans 'Editar su cuenta' %}</a></p>
 														                    <div class="checkout-login-info">
                                                     <br>
 																                    <form action="{% url 'edit_account' %}" method="POST">
 										                                   {% csrf_token %}
 
 																				                <div class="sin-checkout-login">
-																                            <label>Nombre <abbr class="required" title="required">*</abbr></label>
+																                            <label>{% trans 'Nombre' %} <abbr class="required" title="required">*</abbr></label>
 																                            <input class="form-control" name="first_name"  type="text" value="{{ customer.first_name }}">
 																                        </div>
 																												<div class="sin-checkout-login">
-																                            <label>Apellidos <abbr class="required" title="required">*</abbr></label>
+																                            <label>{% trans 'Apellidos' %} <abbr class="required" title="required">*</abbr></label>
 																                            <input class="form-control" name="last_name"  type="text" value="{{ customer.last_name }}">
 																                        </div>
 																												<div class="sin-checkout-login">
-																                            <label>Telefono <abbr class="required" title="required">*</abbr></label>
+																                            <label>{% trans 'Telefono' %} <abbr class="required" title="required">*</abbr></label>
 																                            <input class="form-control" name="phone"  type="text" value="{{ customer.phone }}">
 																                        </div>
 																		                    <div class="sin-checkout-login">
@@ -162,7 +162,7 @@
 																                            <input class="form-control" name="email"  type="text" value="{{ customer.email }}">
 																                        </div>
 																		                    <div class="button-remember-wrap">
-														                                <button class="button" type="submit">Guardar</button>
+														                                <button class="button" type="submit">{% trans 'Guardar' %}</button>
 														                            </div>
 										                                </form>
 

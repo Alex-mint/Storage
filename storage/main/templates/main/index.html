@@ -1,5 +1,6 @@
 {% extends 'main/base.html' %}
 {% load static %}
+{% load i18n %}
 {% block content %}
 
 {% if messages %}
@@ -17,18 +18,21 @@
 <div class="slider-area">
             <div class="slider-active swiper-container">
                 <div class="swiper-wrapper">
+		                {% for box in boxes %}
                     <div class="swiper-slide">
-                        <div class="intro-section slider-height-1 slider-content-center bg-img single-animation-wrap slider-bg-color-3" style="background-image:url({% static 'assets/images/slider/slider-bg-3.jpg' %})">
+                        <div class="intro-section slider-height-1 slider-content-center bg-img single-animation-wrap slider-bg-color-3" style="background-image:url({{ box.image.url }})">
                             <div class="container">
                                 <div class="row">
                                     <div class="col-12 hm2-slider-animation">
                                         <div class="slider-content-2 slider-animated-3">
-                                            <h3 class="animated">Up To 40% Off</h3>
-                                            <h1 class="animated">Summer <br>Collection</h1>
+                                            <h3 class="animated">{% trans 'Oferta especial' %}</h3>
+                                            <h1 class="animated">{{ box.title }} <br>{{ box.price }}€/{% trans 'mes' %}</h1>
                                             <div class="slider-btn-2 btn-hover">
-                                                <a href="product-details.html" class="btn hover-border-radius theme-color animated">
-                                                    Shop Now
-                                                </a>
+		                                            {% if request.user.is_authenticated %}
+				                                            <a href="{% url 'add_to_cart' slug=box.slug %}" class="btn hover-border-radius theme-color animated"  title="{% trans 'Alquilar Ahora' %}">{% trans 'Alquilar Ahora' %}</a>
+		                                                    {% else %}
+				                                            <a href="" class="btn hover-border-radius theme-color animated"  title="{% trans 'Alquilar Ahora' %}">{% trans 'Alquilar Ahora' %}</a>
+		                                            {% endif %}
                                             </div>
                                         </div>
                                     </div>
@@ -36,26 +40,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="swiper-slide">
-                        <div class="intro-section slider-height-1 slider-content-center bg-img single-animation-wrap slider-bg-color-3" style="background-image:url(assets/images/slider/slider-bg-3-2.jpg)">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-12 hm2-slider-animation">
-                                        <div class="slider-content-2 slider-animated-3">
-                                            <h3 class="animated">Up To 40% Off</h3>
-                                            <h1 class="animated">Summer <br>Collection</h1>
-                                            <div class="slider-btn-2 btn-hover">
-                                                <a href="product-details.html" class="btn hover-border-radius theme-color animated">
-                                                    Shop Now
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="home-slider-prev2 main-slider-nav2"><i class="fa fa-angle-left"></i></div>
+                    {% endfor %}
+		                <div class="home-slider-prev2 main-slider-nav2"><i class="fa fa-angle-left"></i></div>
                     <div class="home-slider-next2 main-slider-nav2"><i class="fa fa-angle-right"></i></div>
                 </div>
             </div>
@@ -72,7 +58,7 @@
                                 <div >
                                     <div class="row">
 
-									                      {% for product in products %}
+									                      {% for product in items %}
                                         <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                                             <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200">
                                                 <div class="product-img img-zoom mb-25">
@@ -91,16 +77,16 @@
                                                     </div>
                                                     <div class="product-action-2-wrap">
 		                                                    {% if request.user.is_authenticated %}
-				                                                <a href="{% url 'add_to_cart' slug=product.slug %}" class="product-action-btn-2"  title="AAñadir al Pedido"><i class="pe-7s-cart"></i>Añadir al Pedido</a>
+				                                                <a href="{% url 'add_to_cart' slug=product.slug %}" class="product-action-btn-2"  title="{% trans 'Añadir al Pedido' %}"><i class="pe-7s-cart"></i>{% trans 'Añadir al Pedido' %}</a>
 		                                                    {% else %}
-				                                                <a href="" class="product-action-btn-2"  title="Añadir al Pedido"><i class="pe-7s-cart"></i>Añadir al Pedido</a>
+				                                                <a href="" class="product-action-btn-2"  title="{% trans 'Añadir al Pedido' %}"><i class="pe-7s-cart"></i>{% trans 'Añadir al Pedido' %}</a>
 		                                                    {% endif %}
                                                     </div>
                                                 </div>
                                                 <div class="product-content">
                                                     <h3>{{product.title}}</h3>
                                                     <div class="product-price">
-                                                        <span>{{product.price}}€ por mes</span>
+                                                        <span>{{product.price}}€/{% trans 'mes' %}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -124,7 +110,7 @@
 																                                <div class="product-details-content quickview-content">
 																                                    <h2>{{product.title}}</h2>
 																                                    <div class="product-details-price">
-																                                        <span>{{product.price}}€ al mes(30 dias)</span>
+																                                        <span>{{product.price}}€/{% trans 'mes' %} (30 {% trans 'dias' %})</span>
 																                                    </div>
 
 
@@ -132,9 +118,9 @@
 																                                    <div class="product-details-action-wrap">
 																                                        <div class="single-product-cart btn-hover">
 																                                            {% if request.user.is_authenticated %}
-																				                                        <a href="{% url 'add_to_cart' slug=product.slug %}" class="product-action-btn-2"  title="Add To Cart"><i class="pe-7s-cart"></i>Add to cart</a>
+																				                                        <a href="{% url 'add_to_cart' slug=product.slug %}" class="product-action-btn-2"  title="{% trans 'Añadir al Pedido' %}"><i class="pe-7s-cart"></i>{% trans 'Añadir al Pedido' %}</a>
 																		                                        {% else %}
-																				                                        <a href="" class="product-action-btn-2"  title="Add To Cart"><i class="pe-7s-cart"></i>Add to cart</a>
+																				                                        <a href="" class="product-action-btn-2"  title="{% trans 'Añadir al Pedido' %}"><i class="pe-7s-cart"></i>{% trans 'Añadir al Pedido' %}</a>
 																		                                        {% endif %}
 																                                        </div>
 																                                    </div>
@@ -146,7 +132,6 @@
 																            </div>
 																        </div>
 																        <!-- Product Modal end -->
-
 
                                         {% endfor %}
 

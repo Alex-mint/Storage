@@ -1,0 +1,302 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-04-24 11:02+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\emails\templates\emails\customer_cancel_reserva.html:9
+msgid "su pedido"
+msgstr "your order"
+
+#: .\emails\templates\emails\customer_cancel_reserva.html:9
+msgid "cancelado"
+msgstr "cancel"
+
+#: .\emails\templates\emails\customer_order_notification.html:10
+#: .\main\templates\main\checkout.html:99
+msgid "Su Pedido"
+msgstr "Your Order"
+
+#: .\emails\templates\emails\customer_order_notification.html:12
+#: .\main\templates\main\order-view.html:12
+msgid "Pedido"
+msgstr "Order"
+
+#: .\emails\templates\emails\customer_order_notification.html:16
+#: .\main\templates\main\cart.html:77
+msgid "Meses"
+msgstr "Month"
+
+#: .\main\forms.py:41 .\main\forms.py:59
+msgid "Usuario"
+msgstr "User"
+
+#: .\main\forms.py:45 .\main\forms.py:61
+msgid "Contraseña"
+msgstr "Password"
+
+#: .\main\forms.py:50
+msgid "Rep. contraseña"
+msgstr "Repeat Password"
+
+#: .\main\templates\main\account.html:28 .\main\templates\main\account.html:42
+msgid "Panel de control"
+msgstr "Dashboad"
+
+#: .\main\templates\main\account.html:29
+msgid "Pedidos"
+msgstr "Orders"
+
+#: .\main\templates\main\account.html:30 .\main\templates\main\account.html:87
+#: .\main\templates\main\base.html:198
+msgid "Dirección"
+msgstr "Address"
+
+#: .\main\templates\main\account.html:31 .\main\templates\main\account.html:129
+msgid "Detalles de su cuenta"
+msgstr "Account details"
+
+#: .\main\templates\main\account.html:32
+msgid "Salir"
+msgstr "Logout"
+
+#: .\main\templates\main\account.html:44
+msgid "Hola"
+msgstr "Hi"
+
+#: .\main\templates\main\account.html:60
+msgid "Fecha"
+msgstr "Date"
+
+#: .\main\templates\main\account.html:73
+msgid "Ver Pedido"
+msgstr "View Order"
+
+#: .\main\templates\main\account.html:98
+msgid "Editar Dirección"
+msgstr "Edit Address"
+
+#: .\main\templates\main\account.html:104
+#: .\main\templates\main\checkout.html:58
+msgid "Ciudad"
+msgstr "City"
+
+#: .\main\templates\main\account.html:108
+#: .\main\templates\main\checkout.html:64
+msgid "Calle"
+msgstr "Street"
+
+#: .\main\templates\main\account.html:112
+#: .\main\templates\main\checkout.html:70
+msgid "Numero"
+msgstr "Number"
+
+#: .\main\templates\main\account.html:116
+#: .\main\templates\main\account.html:165
+msgid "Guardar"
+msgstr "Safe"
+
+#: .\main\templates\main\account.html:142
+msgid "Editar su cuenta"
+msgstr "Edit Account"
+
+#: .\main\templates\main\account.html:149
+#: .\main\templates\main\checkout.html:34
+msgid "Nombre"
+msgstr "First Name"
+
+#: .\main\templates\main\account.html:153
+#: .\main\templates\main\checkout.html:40
+msgid "Apellidos"
+msgstr "Last Name"
+
+#: .\main\templates\main\account.html:157
+#: .\main\templates\main\checkout.html:46
+msgid "Telefono"
+msgstr "Phone"
+
+#: .\main\templates\main\base.html:108 .\main\templates\main\base.html:232
+msgid "INICIO"
+msgstr "HOME"
+
+#: .\main\templates\main\base.html:109 .\main\templates\main\base.html:233
+msgid "QUIEN SOMOS"
+msgstr "ABOUT US"
+
+#: .\main\templates\main\base.html:113 .\main\templates\main\base.html:237
+msgid "MIS PEDIDOS"
+msgstr "MY ORDERS"
+
+#: .\main\templates\main\base.html:114 .\main\templates\main\base.html:238
+msgid "SALIR"
+msgstr "LOGOUT"
+
+#: .\main\templates\main\base.html:116 .\main\templates\main\base.html:240
+msgid "REGISTRARME"
+msgstr "SIGN IN"
+
+#: .\main\templates\main\base.html:117 .\main\templates\main\base.html:241
+msgid "ACCEDER"
+msgstr "LOGIN"
+
+#: .\main\templates\main\base.html:178
+msgid "Informacion"
+msgstr "Information"
+
+#: .\main\templates\main\base.html:180
+msgid "Inicio"
+msgstr "Home"
+
+#: .\main\templates\main\base.html:181
+msgid "Quien somos"
+msgstr "Abouy us"
+
+#: .\main\templates\main\base.html:182
+msgid "Contacto"
+msgstr "Contact"
+
+#: .\main\templates\main\base.html:184
+msgid "Mis Pedidos"
+msgstr "My orders"
+
+#: .\main\templates\main\base.html:186 .\main\templates\main\register.html:13
+#: .\main\templates\main\register.html:29
+msgid "Registrarme"
+msgstr "Sign in"
+
+#: .\main\templates\main\base.html:187 .\main\templates\main\login.html:13
+#: .\main\templates\main\login.html:29
+msgid "Acceder"
+msgstr "Login"
+
+#: .\main\templates\main\base.html:196
+msgid "Donde Estamos"
+msgstr "Visit us"
+
+#: .\main\templates\main\base.html:199
+msgid "Teléfono"
+msgstr "Phone"
+
+#: .\main\templates\main\base.html:203
+msgid "Abierto"
+msgstr "Open"
+
+#: .\main\templates\main\base.html:204
+msgid "Domingo : Cerrado"
+msgstr "Sunday: Closed"
+
+#: .\main\templates\main\base.html:234
+msgid "CONTACTO"
+msgstr "CONTACT"
+
+#: .\main\templates\main\cart.html:27 .\main\templates\main\checkout.html:104
+msgid "Producto"
+msgstr "Item"
+
+#: .\main\templates\main\cart.html:28
+msgid "Pricio"
+msgstr "Price"
+
+#: .\main\templates\main\cart.html:29
+msgid "Cantidad"
+msgstr "Quantity"
+
+#: .\main\templates\main\cart.html:30
+msgid "Actualizar precio"
+msgstr "Update price"
+
+#: .\main\templates\main\cart.html:54 .\main\templates\main\cart.html:78
+#: .\main\templates\main\cart.html:99
+msgid "Aplicar"
+msgstr "Update"
+
+#: .\main\templates\main\cart.html:128 .\main\templates\main\checkout.html:124
+msgid "Volver"
+msgstr "Back"
+
+#: .\main\templates\main\cart.html:132 .\main\templates\main\checkout.html:88
+msgid "Continuar"
+msgstr "Continue"
+
+#: .\main\templates\main\checkout.html:26
+msgid "Detalles de Pedido"
+msgstr "Order Details"
+
+#: .\main\templates\main\checkout.html:76
+#: .\main\templates\main\order-view.html:24
+msgid "Fecha de inicio"
+msgstr "Start date"
+
+#: .\main\templates\main\checkout.html:82
+#: .\main\templates\main\order-view.html:27
+msgid "Comentario"
+msgstr "Comment"
+
+#: .\main\templates\main\checkout.html:110 .\main\templates\main\index.html:28
+#: .\main\templates\main\index.html:84 .\main\templates\main\index.html:108
+msgid "mes"
+msgstr "month"
+
+#: .\main\templates\main\checkout.html:117
+#: .\main\templates\main\order-view.html:20
+msgid "meses"
+msgstr "months"
+
+#: .\main\templates\main\index.html:27
+msgid "Oferta especial"
+msgstr "Special offer"
+
+#: .\main\templates\main\index.html:31
+msgid "Alquilar Ahora"
+msgstr "Rent Now"
+
+#: .\main\templates\main\index.html:75 .\main\templates\main\index.html:77
+#: .\main\templates\main\index.html:116 .\main\templates\main\index.html:118
+msgid "Añadir al Pedido"
+msgstr "Add to Order"
+
+#: .\main\templates\main\index.html:108
+msgid "dias"
+msgstr "days"
+
+#: .\main\templates\main\order-view.html:23
+msgid "Pedido Creado"
+msgstr "Order Created"
+
+#: .\main\templates\main\order-view.html:25
+msgid "Fecha de fin"
+msgstr "End date"
+
+#: .\main\templates\main\order-view.html:26
+msgid "Precio total"
+msgstr "Total price"
+
+#: .\main\templates\main\order-view.html:33
+msgid "Cancelar Pedido"
+msgstr ""
+
+#: .\storage\settings.py:108
+msgid "Spanish"
+msgstr "Cancel Order"
+
+#: .\storage\settings.py:109
+msgid "English"
+msgstr ""
+
+#: .\storage\settings.py:110
+msgid "German"
+msgstr ""

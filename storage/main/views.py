@@ -11,16 +11,19 @@ from django.views.generic import CreateView
 from .forms import RegisterUserForm, LoginUserForm, OrderForm, AddImageForm, \
     StatusForm, PageInfo
 from .mixins import CartMixin
-from .models import Item, CartProduct, Customer, Order, Image, Storage
+from .models import Item, CartProduct, Customer, Order, Image, Storage, \
+    PageMessage
 from .utils import recalc_cart, send_message
 
 
 class Home(CartMixin, View):
     def get(self, request, *args, **kwargs):
-        products = Item.objects.filter(extra=False)
+        items = Item.objects.filter(category__name='items')
+        boxes = Item.objects.filter(category__name='box')
         context = {
             'storage': self.storage,
-            'products': products,
+            'items': items,
+            'boxes': boxes,
             'cart': self.cart
         }
         return render(request, 'main/index.html', context)
@@ -191,10 +194,12 @@ class AccountView(CartMixin, View):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             customer = Customer.objects.get(user=request.user)
+            text = PageMessage.objects.filter(title='dashboad').first()
             context = {
                 'storage': self.storage,
                 'customer': customer,
                 'cart': self.cart,
+                'text': text
             }
             return render(request, 'main/account.html', context)
         else:

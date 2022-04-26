@@ -23,7 +23,7 @@
                         <div class="col-lg-7">
                             <div class="billing-info-wrap">
 
-                                <h3>Detalles de Pedido</h3>
+                                <h3>{% trans 'Detalles de Pedido' %}</h3>
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="billing-info mb-20">
@@ -31,19 +31,19 @@
 																									{% csrf_token %}
 		                                            <div class="col-lg-12">
                                         <div class="billing-info mb-20">
-                                            <label>Nombre <abbr class="required" title="required">*</abbr></label>
+                                            <label>{% trans 'Nombre' %} <abbr class="required" title="required">*</abbr></label>
                                             <input class="form-control" name="first_name"  type="text" value="{{ customer.first_name }}">
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="billing-info mb-20">
-                                            <label>Apellidos <abbr class="required" title="required">*</abbr></label>
+                                            <label>{% trans 'Apellidos' %} <abbr class="required" title="required">*</abbr></label>
                                             <input class="form-control" name="last_name"  type="text" value="{{ customer.last_name }}">
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="billing-info mb-20">
-                                            <label>Telefono <abbr class="required" title="required">*</abbr></label>
+                                            <label>{% trans 'Telefono' %} <abbr class="required" title="required">*</abbr></label>
 																            <input class="form-control" name="phone"  type="text" value="{{ customer.phone }}">
                                         </div>
                                     </div>
@@ -55,31 +55,31 @@
                                     </div>
 		                                <div class="col-lg-12">
                                         <div class="billing-info mb-20">
-                                            <label>Ciudad <abbr class="required" title="required">*</abbr></label>
+                                            <label>{% trans 'Ciudad' %} <abbr class="required" title="required">*</abbr></label>
 																            <input class="form-control" name="city"  type="text" value="{{ customer.city }}">
                                         </div>
                                     </div>
 		                                <div class="col-lg-12">
                                         <div class="billing-info mb-20">
-                                            <label>Calle <abbr class="required" title="required">*</abbr></label>
+                                            <label>{% trans 'Calle' %} <abbr class="required" title="required">*</abbr></label>
 																                            <input class="form-control" name="street"  type="text" value="{{ customer.street }}">
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="billing-info mb-20">
-                                            <label>Numero <abbr class="required" title="required">*</abbr></label>
+                                            <label>{% trans 'Numero' %} <abbr class="required" title="required">*</abbr></label>
 																            <input class="form-control" name="number"  type="text" value="{{ customer.number }}">
                                         </div>
                                     </div>
-		                                <div class="col-lg-12">
+		                                <div class="col-lg-4">
                                         <div class="billing-info mb-20">
-                                            <label>Fecha de inicio <abbr class="required" title="required">*</abbr></label>
+                                            <label>{% trans 'Fecha de inicio' %} <abbr class="required" title="required">*</abbr></label>
 																            <p>{{ form.order_date}}</p>
                                         </div>
                                     </div>
 		                                <div class="col-lg-8">
                                         <div class="billing-info mb-20">
-                                            <label>Comentario <abbr class="required" title="required">*</abbr></label>
+                                            <label>{% trans 'Comentario' %} <abbr class="required" title="required">*</abbr></label>
 																            <p>{{ form.comment}}</p>
                                         </div>
                                     </div>
@@ -96,32 +96,32 @@
                         </div>
                         <div class="col-lg-5">
                             <div class="your-order-area">
-                                <h3>Su Pedido</h3>
+                                <h3>{% trans 'Su Pedido' %}</h3>
                                 <div class="your-order-wrap gray-bg-4">
                                     <div class="your-order-info-wrap">
                                         <div class="your-order-info">
                                             <ul>
-                                                <li>Producto <span>Total</span></li>
+                                                <li>{% trans 'Producto' %} <span>Total</span></li>
                                             </ul>
                                         </div>
                                         <div class="your-order-middle">
                                             <ul>
 		                                            {% for item in cart.products.all %}
-                                                <li>{{item.qty}} {{item.item.title}} x  1 mes   <span>{{item.final_price|floatformat:2}}€ </span></li>
+                                                <li>{{item.qty}} {{item.item.title}} x  1 {% trans 'mes' %}   <span>{{item.final_price|floatformat:2}}€ </span></li>
 
 		                                            {% endfor %}
                                             </ul
                                         </div>
                                         <div class="your-order-info order-subtotal">
                                             <ul>
-                                                <li><span>Total x {{ cart.month }} meses {{cart.final_price|floatformat:2}}€ </span></li>
+                                                <li><span>Total x {{ cart.month }} {% trans 'meses' %} {{cart.final_price|floatformat:2}}€ </span></li>
                                             </ul>
                                         </div>
                                     </div>
 
                                 </div>
                                 <div class="Place-order btn-hover">
-                                    <a href="{% url 'cart' %}">&#x2190; Volver</a>
+                                    <a href="{% url 'cart' %}">&#x2190; {% trans 'Volver' %}</a>
                                 </div>
 
                             </div>

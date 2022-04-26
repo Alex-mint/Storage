@@ -175,11 +175,11 @@
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                                 <div class="footer-widget footer-widget-margin-1 footer-list mb-40">
-		                                <h3 class="footer-title">Informacion</h3>
+		                                <h3 class="footer-title">{% trans 'Informacion' %}</h3>
                                     <ul>
-                                        <li><a href="{% url 'home' %}">Inicio</a></li>
-                                        <li><a href="{% url 'about_us' %}">Quien somos</a></li>
-                                        <li><a href="{% url 'contact_us' %}">Contacto</a></li>
+                                        <li><a href="{% url 'home' %}">{% trans 'Inicio' %}</a></li>
+                                        <li><a href="{% url 'about_us' %}">{% trans 'Quien somos' %}</a></li>
+                                        <li><a href="{% url 'contact_us' %}">{% trans 'Contacto' %}</a></li>
                                         {% if request.user.is_authenticated %}
 																						<li><a href="{% url 'account' %}">{% trans 'Mis Pedidos' %}</a></li>
 																				{% else %}
@@ -193,15 +193,15 @@
 
                             <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                                 <div class="footer-widget footer-widget-margin-2 footer-address mb-40">
-		                                <h3 class="footer-title">Donde Estamos</h3>
+		                                <h3 class="footer-title">{% trans 'Donde Estamos' %}</h3>
                                     <ul>
-                                        <li><span>Address: </span>Your address goes here </li>
-                                        <li><span>Telephone Enquiry:</span> (012) 345 6789</li>
-                                        <li><span>Email: </span>demo@example.com</li>
+                                        <li><span>{% trans 'Dirección' %}: </span>Your address goes here </li>
+                                        <li><span>{% trans 'Teléfono' %}:</span> <a href="tel:{{ storage.phone }}">{{ storage.phone }}</a></li>
+                                        <li><span>Email: </span>{{ storage.email }}</li>
                                     </ul>
                                     <div class="open-time">
-                                        <p>Open : <span>8:00 AM</span> - Close : <span>18:00 PM</span></p>
-                                        <p>Saturday - Sunday : Close</p>
+                                        <p>{% trans 'Abierto' %}: <span>8:00</span> - <span>18:00</span></p>
+                                        <p>{% trans 'Domingo : Cerrado' %}</p>
                                     </div>
                                 </div>
                             </div>

@@ -31,6 +31,18 @@ class Storage(models.Model):
         verbose_name = 'Dueño'
 
 
+class Category(models.Model):
+
+    name = models.CharField('Categoria', max_length=255)
+    slug = models.SlugField(unique=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('category_detail', kwargs={'slug': self.slug})
+
+
 class Item(models.Model):
     storage = models.ForeignKey(
         Storage, verbose_name='Almacén',
@@ -39,12 +51,16 @@ class Item(models.Model):
         blank=True,
         on_delete=models.SET_NULL
     )
+    category = models.ForeignKey(Category, verbose_name='Categoria',
+                                 null=True, blank=True,
+                                 on_delete=models.CASCADE)
     title = models.CharField('Nombre', max_length=255)
     slug = models.SlugField(unique=True)
-    image = models.ImageField('Imagen')
+
     description = models.TextField('Descripcion', null=True)
     price = models.DecimalField('Precio', max_digits=9, decimal_places=2)
     extra = models.BooleanField(default=False)
+    image = models.ImageField('Imagen')
 
     def __str__(self):
         return self.title

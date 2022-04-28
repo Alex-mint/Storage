@@ -15,6 +15,7 @@ class Storage(models.Model):
     number = models.CharField('Numero', max_length=10, null=True, blank=True)
     iban = models.CharField('Iban', max_length=255, null=True, blank=True)
     banco = models.CharField('Banco', max_length=255, null=True, blank=True)
+    youtube = models.CharField('Video', max_length=255, null=True, blank=True)
     address = models.CharField('Direccion de Banco', max_length=255, null=True,
                                blank=True)
     image = models.ImageField('Fotos de pedido', null=True, blank=True)
@@ -60,7 +61,8 @@ class Item(models.Model):
     description = models.TextField('Descripcion', null=True)
     price = models.DecimalField('Precio', max_digits=9, decimal_places=2)
     extra = models.BooleanField(default=False)
-    image = models.ImageField('Imagen')
+    image = models.ImageField('Imagen', null=True, blank=True)
+    slide = models.ImageField('Slide', null=True, blank=True)
 
     def __str__(self):
         return self.title

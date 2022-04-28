@@ -20,7 +20,7 @@
                 <div class="swiper-wrapper">
 		                {% for box in boxes %}
                     <div class="swiper-slide">
-                        <div class="intro-section slider-height-1 slider-content-center bg-img single-animation-wrap slider-bg-color-3" style="background-image:url({{ box.image.url }})">
+                        <div class="intro-section slider-height-1 slider-content-center bg-img single-animation-wrap slider-bg-color-3" style="background-image:url({{ box.slide.url }})">
                             <div class="container">
                                 <div class="row">
                                     <div class="col-12 hm2-slider-animation">
@@ -28,11 +28,8 @@
                                             <h3 class="animated">{% trans 'Oferta especial' %}</h3>
                                             <h1 class="animated">{{ box.title }} <br>{{ box.price }}€/{% trans 'mes' %}</h1>
                                             <div class="slider-btn-2 btn-hover">
-		                                            {% if request.user.is_authenticated %}
 				                                            <a href="{% url 'add_to_cart' slug=box.slug %}" class="btn hover-border-radius theme-color animated"  title="{% trans 'Alquilar Ahora' %}">{% trans 'Alquilar Ahora' %}</a>
-		                                                    {% else %}
-				                                            <a href="" class="btn hover-border-radius theme-color animated"  title="{% trans 'Alquilar Ahora' %}">{% trans 'Alquilar Ahora' %}</a>
-		                                            {% endif %}
+
                                             </div>
                                         </div>
                                     </div>
@@ -48,6 +45,56 @@
         </div>
 <!-- shop-area-->
 
+<div class="product-details-area pb-100 pt-100">
+            <div class="container">
+                <div class="row">
+		                {% for box in boxes %}
+                    <div class="col-lg-6">
+                        <div class="product-details-img-wrap" data-aos="fade-up" data-aos-delay="200">
+                            <div class="easyzoom-style">
+                            <img src="{{ box.image.url }}" alt="">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="product-details-content" data-aos="fade-up" data-aos-delay="400">
+                            <h2>{{ box.title }}</h2>
+                            <div class="product-details-price">
+		                            <span class="new-price">{{ box.price }}</span>
+                                <span>€/{% trans 'mes' %}</span>
+
+                            </div>
+
+                            <div class="product-details-action-wrap">
+                                <div class="single-product-cart btn-hover">
+				                                <a href="{% url 'add_to_cart' slug=box.slug %}"  title="{% trans 'Alquilar Ahora' %}">{% trans 'Alquilar Ahora' %}</a>
+
+                                </div>
+
+                            </div>
+                            <div class="product-details-meta">
+                                <span>{{ box.description }}</span>
+                            </div>
+                            <div class="social-icon-style-4">
+
+                            </div>
+                        </div>
+                    </div>
+		                {% endfor %}
+                </div>
+            </div>
+        </div>
+
+
+
+                <div class="text-center">
+                    <h2 style="font-weight: 500;">Smart Storage</h2>
+
+                </div>
+
+
+
 <div class="shop-area pt-100 pb-100">
             <div class="container">
                 <div class="row flex-row-reverse">
@@ -58,13 +105,14 @@
                                 <div >
                                     <div class="row">
 
+
+
+
 									                      {% for product in items %}
                                         <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                                             <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200">
                                                 <div class="product-img img-zoom mb-25">
-                                                    <a href="product-details.html">
                                                         <img src="{{product.image.url}}" alt="{{product.title}}">
-                                                    </a>
 
                                                     <div class="product-action-wrap">
 
@@ -76,11 +124,8 @@
 
                                                     </div>
                                                     <div class="product-action-2-wrap">
-		                                                    {% if request.user.is_authenticated %}
 				                                                <a href="{% url 'add_to_cart' slug=product.slug %}" class="product-action-btn-2"  title="{% trans 'Añadir al Pedido' %}"><i class="pe-7s-cart"></i>{% trans 'Añadir al Pedido' %}</a>
-		                                                    {% else %}
-				                                                <a href="" class="product-action-btn-2"  title="{% trans 'Añadir al Pedido' %}"><i class="pe-7s-cart"></i>{% trans 'Añadir al Pedido' %}</a>
-		                                                    {% endif %}
+
                                                     </div>
                                                 </div>
                                                 <div class="product-content">
@@ -117,11 +162,8 @@
 																                                    <p>{{ product.description}}</p>
 																                                    <div class="product-details-action-wrap">
 																                                        <div class="single-product-cart btn-hover">
-																                                            {% if request.user.is_authenticated %}
 																				                                        <a href="{% url 'add_to_cart' slug=product.slug %}" class="product-action-btn-2"  title="{% trans 'Añadir al Pedido' %}"><i class="pe-7s-cart"></i>{% trans 'Añadir al Pedido' %}</a>
-																		                                        {% else %}
-																				                                        <a href="" class="product-action-btn-2"  title="{% trans 'Añadir al Pedido' %}"><i class="pe-7s-cart"></i>{% trans 'Añadir al Pedido' %}</a>
-																		                                        {% endif %}
+
 																                                        </div>
 																                                    </div>
 																                                </div>
@@ -147,58 +189,6 @@
 
 
 
-<!-- icon-area-->
-<div class="service-area pb-65">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                        <div class="service-wrap-2 text-center mb-30" data-aos="fade-up" data-aos-delay="200">
-                            <div class="service-img-2">
-                                <img src="{% static 'assets/images/icon-img/car.png' %}" alt="">
-                            </div>
-                            <div class="service-content-2">
-                                <h3>Free Shipping</h3>
-                                <p>Lorem ipsum dolor sit amet conse adipisicing elit sed do.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                        <div class="service-wrap-2 text-center mb-30" data-aos="fade-up" data-aos-delay="400">
-                            <div class="service-img-2">
-                                <img src="{% static 'assets/images/icon-img/time.png' %}" alt="">
-                            </div>
-                            <div class="service-content-2">
-                                <h3>Support 24/7</h3>
-                                <p>Lorem ipsum dolor sit amet conse adipisicing elit sed do.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                        <div class="service-wrap-2 text-center mb-30" data-aos="fade-up" data-aos-delay="600">
-                            <div class="service-img-2">
-                                <img src="{% static 'assets/images/icon-img/dollar.png' %}" alt="">
-                            </div>
-                            <div class="service-content-2">
-                                <h3>Money Return</h3>
-                                <p>Lorem ipsum dolor sit amet conse adipisicing elit sed do. </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                        <div class="service-wrap-2 text-center mb-30" data-aos="fade-up" data-aos-delay="800">
-                            <div class="service-img-2">
-                                <img src="{% static 'assets/images/icon-img/discount.png' %}" alt="">
-                            </div>
-                            <div class="service-content-2">
-                                <h3>Order Discount</h3>
-                                <p>Lorem ipsum dolor sit amet conse adipisicing elit sed do.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-<!-- end icon-area-->
 
 {% endblock content %}

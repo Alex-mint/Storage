@@ -13,7 +13,7 @@ from .forms import RegisterUserForm, LoginUserForm, OrderForm, AddImageForm, \
 from .mixins import CartMixin
 from .models import Item, CartProduct, Customer, Order, Image, Storage, \
     PageMessage
-from .utils import recalc_cart, send_message
+from .utils import recalc_cart, send_message, get_map
 
 
 class Home(CartMixin, View):
@@ -24,7 +24,7 @@ class Home(CartMixin, View):
             'storage': self.storage,
             'items': items,
             'boxes': boxes,
-            'cart': self.cart
+            'cart': self.cart,
         }
         return render(request, 'main/index.html', context)
 
@@ -43,12 +43,18 @@ class AboutUs(CartMixin, View):
 class ContactUs(CartMixin, View):
     def get(self, request, *args, **kwargs):
         text = PageInfo.objects.filter(title_es='contacto').first()
+        #storage = Storage.objects.filter(main=True).first()
+        folium_map = get_map(self.storage)
         context = {
             'storage': self.storage,
             'cart': self.cart,
-            'text': text
+            'text': text,
+            'map': folium_map._repr_html_()
         }
         return render(request, 'main/contact_us.html', context)
+
+
+
 
 
 class CartView(CartMixin, View):
@@ -61,22 +67,27 @@ class CartView(CartMixin, View):
             }
             return render(request, 'main/cart.html', context)
         else:
+            send_message('login', request)
             return redirect('home')
 
 
 class AddToCartView(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
-        item_slug = kwargs.get('slug')
-        item = Item.objects.get(slug=item_slug)
-        cart_product, created = CartProduct.objects.get_or_create(
-            user=self.cart.owner, cart=self.cart, item=item
-        )
-        if created:
-            self.cart.products.add(cart_product)
-        recalc_cart(self.cart)
-        send_message('add_to_cart', request)
-        return HttpResponseRedirect('/')
+        if request.user.is_authenticated:
+            item_slug = kwargs.get('slug')
+            item = Item.objects.get(slug=item_slug)
+            cart_product, created = CartProduct.objects.get_or_create(
+                user=self.cart.owner, cart=self.cart, item=item
+            )
+            if created:
+                self.cart.products.add(cart_product)
+            recalc_cart(self.cart)
+            send_message('add_to_cart', request)
+            return HttpResponseRedirect('/')
+        else:
+            send_message('login', request)
+            return redirect('home')
 
 
 class DeleteFromCartView(CartMixin, View):

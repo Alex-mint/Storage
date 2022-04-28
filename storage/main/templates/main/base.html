@@ -11,17 +11,17 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="profile" href="https://gmpg.org/xfn/11">
-    <link rel="canonical" href="https://htmldemo.hasthemes.com/urdan/index.html" />
+    <link rel="canonical" href="" />
 
     <!-- Open Graph (OG) meta tags are snippets of code that control how URLs are displayed when shared on social media  -->
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Urdan - Minimal eCommerce HTML Template" />
-    <meta property="og:url" content="https://htmldemo.hasthemes.com/urdan/index.html" />
-    <meta property="og:site_name" content="Urdan - Minimal eCommerce HTML Template" />
+    <meta property="og:title" content="Smartbox - Self storage in El Tablero, Maspalomas. Gran Canaria." />
+    <meta property="og:url" content="http://bbb.shellsrb.beget.tech/es/" />
+    <meta property="og:site_name" content="Smartbox - Self Storage, El Tablero" />
     <!-- For the og:image content, replace the # with a link of an image -->
     <meta property="og:image" content="#" />
-    <meta property="og:description" content="Urdan Minimal eCommerce Bootstrap 5 Template is a stunning eCommerce website template that is the best choice for any online store." />
+    <meta property="og:description" content="We want to make storing easy! Pick a size, pay, instructions by e-mail. Smartbox self storage, located in El Tablero, Maspalomas Gran Canaria." />
     <!-- Add site Favicon -->
     <link rel="icon" href="assets/images/favicon/cropped-favicon-32x32.png" sizes="32x32" />
     <link rel="icon" href="assets/images/favicon/cropped-favicon-192x192.png" sizes="192x192" />
@@ -97,7 +97,7 @@
                     <div class="row align-items-center">
                         <div class="col-lg-3 col-md-6 col-6">
                             <div class="logo">
-                                <a href="{% url 'home' %}"><img src="{% static 'assets/images/logo/logo.png' %}" alt="logo"></a>
+                                <a href="{% url 'home' %}"><img src="{% static 'assets/images/logo/logo-4.png' %}" alt="logo"></a>
                             </div>
                         </div>
                         <div class="col-lg-6 d-none d-lg-block">
@@ -136,7 +136,7 @@
                                         <span class="product-count bg-black">{{ cart.products.count }}</span>
                                     </a>
 		                                {% else %}
-		                                <a class="" href=""><i class="pe-7s-shopbag"></i>
+		                                <a class="" href="{% url 'cart' %}"><i class="pe-7s-shopbag"></i>
                                         <span class="product-count bg-black"></span>
                                     </a>
 		                                {% endif %}

@@ -2,7 +2,8 @@
 {% load static %}
 {% load i18n %}
 {% block content %}
-
+<script type="application/javascript" src="https://js.stripe.com/v3/"></script>
+<script src="https://js.stripe.com/v3/"></script>
          {% if messages %}
             {% for message in messages %}
                 <div class="container">
@@ -62,7 +63,7 @@
 		                                <div class="col-lg-12">
                                         <div class="billing-info mb-20">
                                             <label>{% trans 'Calle' %} <abbr class="required" title="required">*</abbr></label>
-																                            <input class="form-control" name="street"  type="text" value="{{ customer.street }}">
+																            <input class="form-control" name="street"  type="text" value="{{ customer.street }}">
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
@@ -79,16 +80,20 @@
                                     </div>
 		                                <div class="col-lg-8">
                                         <div class="billing-info mb-20">
-                                            <label>{% trans 'Comentario' %} <abbr class="required" title="required">*</abbr></label>
-																            <p>{{ form.comment}}</p>
+                                            <label>{% trans 'Comentario' %} </label>
+																            <input class="form-control" name="comment"  type="text" >
                                         </div>
                                     </div>
                                             <hr>
 
+
 																								<button class="btn btn-outline-dark" type="submit">{% trans 'Continuar' %}</button>
 																						</form>
 
+
                                         </div>
+		                                    <div class="col-lg-8">
+                                    </div>
                                     </div>
 
                                 </div>
@@ -110,7 +115,7 @@
                                                 <li>{{item.qty}} {{item.item.title}} x  1 {% trans 'mes' %}   <span>{{item.final_price|floatformat:2}}€ </span></li>
 
 		                                            {% endfor %}
-                                            </ul
+                                            </ul>
                                         </div>
                                         <div class="your-order-info order-subtotal">
                                             <ul>
@@ -124,6 +129,8 @@
                                     <a href="{% url 'cart' %}">&#x2190; {% trans 'Volver' %}</a>
                                 </div>
 
+
+
                             </div>
                         </div>
                     </div>
@@ -132,7 +139,7 @@
         </div>
 
 
-{% endblock content %}
+{% endblock %}
 
 
  

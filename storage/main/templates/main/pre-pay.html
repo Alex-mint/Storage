@@ -1,0 +1,170 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+
+{% if messages %}
+            {% for message in messages %}
+                <div class="container">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+		                <center><h5>{{ message }}</h5></center>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-lable="Close"></button>
+                </div>
+
+                </div>
+            {% endfor %}
+				{% endif %}
+
+<div class="checkout-main-area pb-100 pt-100">
+            <div class="container">
+
+                <div class="checkout-wrap pt-30">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="your-order-area">
+                                <h3>{% trans 'Detalles de Pedido' %}</h3>
+                                <div class="your-order-wrap gray-bg-4">
+                                    <div class="your-order-info-wrap">
+                                        <div class="your-order-info order-subtotal">
+                                            <ul>
+                                                <li>{% trans 'Nombre' %}:<span>{{ customer.first_name }}</span></li>
+                                            </ul>
+                                        </div>
+		                                    <div class="your-order-info order-subtotal">
+                                            <ul>
+                                                <li>{% trans 'Apellidos' %}:<span>{{ customer.last_name }} </span></li>
+                                            </ul>
+                                        </div>
+		                                    <div class="your-order-info order-subtotal">
+                                            <ul>
+                                                <li>{% trans 'Telefono' %}:<span>{{ customer.phone }} </span></li>
+                                            </ul>
+                                        </div>
+
+		                                    <div class="your-order-info order-subtotal">
+                                            <ul>
+                                                <li>{% trans 'Ciudad' %}:<span>{{ customer.city }}</span></li>
+                                            </ul>
+                                        </div>
+		                                    <div class="your-order-info order-subtotal">
+                                            <ul>
+                                                <li>{% trans 'Calle' %}<span>{{ customer.street }} {{ customer.number }}</span></li>
+                                            </ul>
+                                        </div>
+		                                    <div class="your-order-info order-subtotal">
+                                            <ul>
+                                                <li>{% trans 'Fecha de inicio' %}<span>{{ order_date }} x {{ cart.month }} {% trans 'meses' %}</span></li>
+                                            </ul>
+                                        </div>
+		                                    <div class="your-order-info order-subtotal">
+                                            <ul>
+                                                <li>{% trans 'Comentario' %}<span>{{ comment }}</span></li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+		                            <div class="Place-order btn-hover">
+                                    <a href="{% url 'checkout' %}">&#x2190; {% trans 'Volver' %}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="your-order-area">
+                                <h3>{% trans 'Su Pedido' %}</h3>
+                                <div class="your-order-wrap gray-bg-4">
+                                    <div class="your-order-info-wrap">
+                                        <div class="your-order-info">
+                                            <ul>
+                                                <li>{% trans 'Producto' %} <span>Total</span></li>
+                                            </ul>
+                                        </div>
+                                        <div class="your-order-middle">
+                                            <ul>
+		                                            {% for item in cart.products.all %}
+                                                <li>{{item.qty}} {{item.item.title}} x  1 {% trans 'mes' %}   <span>{{item.final_price|floatformat:2}}€ </span></li>
+
+		                                            {% endfor %}
+                                            </ul>
+                                        </div>
+                                        <div class="your-order-info order-subtotal">
+                                            <ul>
+                                                <li>Total x {{ cart.month }} {% trans 'meses' %} <span>{{cart.final_price|floatformat:2}}€ </span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="Place-order btn-hover">
+                                    <a href="" onclick="buy(event)">{% trans 'Pagar con tarjeta' %}</a>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<button
+    onclick="buy(event)">
+    Confirm checkout
+</button>
+{% endblock content %}
+{% block scripts %}
+<script type="application/javascript" src="https://js.stripe.com/v3/"></script>
+<script>
+    function validateForm(data) {
+
+    }
+
+    function buy(event) {
+        event.preventDefault()
+
+        let data = {
+
+        }
+
+        let errors = validateForm(data)
+        console.log(errors)
+
+        var stripe = Stripe('{{ pub_key }}')
+
+
+
+            var stripe = Stripe('{{ pub_key }}')
+
+            fetch('/pay-order/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify(data)
+            })
+            .then(function(response) {
+                return response.json()
+            })
+            .then(function(session) {
+                return stripe.redirectToCheckout({ sessionId: session.session.id })
+            })
+            .then(function(result) {
+                if (result.error) {
+                    alert(result.error.message)
+                }
+            })
+            .catch(function(error) {
+                console.log('Errors', error)
+            })
+
+
+
+
+        return false
+    }
+</script>
+{% endblock %}

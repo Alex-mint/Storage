@@ -4,9 +4,12 @@ from . import views
 
 urlpatterns = [
     path('', views.Home.as_view(), name='home'),
+    #path('webhooks/stripe/', views.stripe_webhook, name='stripe_webhook'),
     path('cart/', views.CartView.as_view(), name='cart'),
-    path('about-us', views.AboutUs.as_view(), name='about_us'),
-    path('contact-us', views.ContactUs.as_view(), name='contact_us'),
+    path('about-us/', views.AboutUs.as_view(), name='about_us'),
+    path('contact-us/', views.ContactUs.as_view(), name='contact_us'),
+    path('success/', views.Success.as_view(), name='success'),
+    path('pay-order/', views.StripeView.as_view(), name='pay_order'),
     path('order-details/<int:id>', views.order_detail, name='order_details'),
     path('order-view/<int:id>', views.order_view, name='order_view'),
     path('order-cancel/<int:id>', views.order_cancel, name='order_cancel'),
@@ -21,6 +24,7 @@ urlpatterns = [
     path('account/', views.AccountView.as_view(), name='account'),
     path('staff/', views.StaffView.as_view(), name='staff'),
     path('make-order/', views.MakeOrderView.as_view(), name='make_order'),
+    path('pre-pay/', views.PrePay.as_view(), name='pre_pay'),
     path('edit-address/', views.edit_address, name='edit_address'),
     path('edit-account/', views.edit_account, name='edit_account'),
     path('change-qty/<str:slug>/', views.ChangeQTYView.as_view(), name='change_qty'),

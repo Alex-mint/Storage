@@ -1,18 +1,19 @@
-from django.contrib.auth.decorators import login_required
+import stripe
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout, login
 from django.db import transaction
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView
+from django.conf import settings
 
 from .forms import RegisterUserForm, LoginUserForm, OrderForm, AddImageForm, \
     StatusForm, PageInfo
 from .mixins import CartMixin
 from .models import Item, CartProduct, Customer, Order, Image, Storage, \
-    PageMessage
+    PageMessage, Cart
 from .utils import recalc_cart, send_message, get_map
 
 
@@ -43,7 +44,6 @@ class AboutUs(CartMixin, View):
 class ContactUs(CartMixin, View):
     def get(self, request, *args, **kwargs):
         text = PageInfo.objects.filter(title_es='contacto').first()
-        #storage = Storage.objects.filter(main=True).first()
         folium_map = get_map(self.storage)
         context = {
             'storage': self.storage,
@@ -52,9 +52,6 @@ class ContactUs(CartMixin, View):
             'map': folium_map._repr_html_()
         }
         return render(request, 'main/contact_us.html', context)
-
-
-
 
 
 class CartView(CartMixin, View):
@@ -186,7 +183,6 @@ def edit_staff_comment(request, id):
         return redirect('home')
 
 
-
 def order_cancel(request, id):
     if request.user.is_authenticated:
         order = Order.objects.get(id=id)
@@ -279,11 +275,41 @@ class Checkout(CartMixin, View):
                 'storage': self.storage,
                 'customer': customer,
                 'cart': self.cart,
-                'form': form
+                'form': form,
+                'pub_key': settings.STRIPE_API_KEY_PUBLIC
             }
             return render(request, 'main/checkout.html', context)
         else:
             return redirect('home')
+
+
+class StripeView(CartMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        line_items = [
+            {
+                'price_data': {
+                    'currency': 'eur',
+                    'product_data': {
+                        'name': f'Storage x {self.cart.month}/mo',
+                    },
+                    'unit_amount': int(self.cart.final_price * 100),
+                },
+                'quantity': 1
+            }
+        ]
+
+        stripe.api_key = self.storage.secret_key
+        session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=line_items,
+            mode='payment',
+            success_url='http://127.0.0.1:8000/success/',
+            cancel_url='http://127.0.0.1:8000/error/'
+        )
+        payment_intent = session.payment_intent
+        request.session['payment_intent'] = payment_intent
+        return JsonResponse({'session': session, 'order': payment_intent})
 
 
 class MakeOrderView(CartMixin, View):
@@ -293,7 +319,6 @@ class MakeOrderView(CartMixin, View):
         form = OrderForm(request.POST or None)
         customer = Customer.objects.get(user=request.user)
         if form.is_valid():
-            new_order = form.save(commit=False)
             customer.first_name = form.cleaned_data['first_name']
             customer.last_name = form.cleaned_data['last_name']
             customer.phone = form.cleaned_data['phone']
@@ -302,17 +327,68 @@ class MakeOrderView(CartMixin, View):
             customer.street = form.cleaned_data['street']
             customer.number = form.cleaned_data['number']
             customer.save()
-            new_order.customer = customer
-            new_order.month = self.cart.month
-            self.cart.in_order = True
-            self.cart.save()
-            new_order.cart = self.cart
-            new_order.save()
-            customer.orders.add(new_order)
-            send_message('new_order', request)
-            return redirect('account')
+            request.session['order_date'] = str(form.cleaned_data['order_date'])
+            request.session['comment'] = form.cleaned_data['comment']
+            return HttpResponseRedirect('/pre-pay/')
         send_message('fields', request)
         return HttpResponseRedirect('/checkout/')
+
+
+class PrePay(CartMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            customer = Customer.objects.get(user=request.user)
+            order_date = request.session['order_date']
+            comment = request.session['comment']
+            context = {
+                'storage': self.storage,
+                'customer': customer,
+                'cart': self.cart,
+                'order_date': order_date,
+                'comment': comment,
+                'pub_key': self.storage.public_key
+            }
+            return render(request, 'main/pre-pay.html', context)
+        else:
+            return redirect('home')
+
+
+class Success(CartMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            if self.cart.final_price:
+                customer = Customer.objects.get(user=request.user)
+                new_order = Order()
+                new_order.customer = customer
+                new_order.first_name = customer.first_name
+                new_order.last_name = customer.last_name
+                new_order.phone = customer.phone
+                new_order.email = customer.email
+                new_order.city = customer.city
+                new_order.street = customer.street
+                new_order.number = customer.number
+                new_order.month = self.cart.month
+                new_order.cart = self.cart
+                new_order.order_start = request.session['order_date']
+                new_order.commit = request.session['comment']
+                new_order.payment_intent = request.session['payment_intent']
+                self.cart.in_order = True
+                self.cart.save()
+                new_order.cart = self.cart
+                new_order.save()
+                customer.orders.add(new_order)
+
+                text = PageMessage.objects.get(title='pay-success')
+                context = {
+                    'text': text,
+                }
+                return render(request, 'main/success.html', context=context)
+            else:
+                return redirect('account')
+        else:
+            return redirect('home')
 
 
 class RegisterUser(CartMixin, CreateView):

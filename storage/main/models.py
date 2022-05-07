@@ -13,8 +13,10 @@ class Storage(models.Model):
     city = models.CharField('Ciudad', max_length=100, null=True, blank=True)
     street = models.CharField('Calle', max_length=100, null=True, blank=True)
     number = models.CharField('Numero', max_length=10, null=True, blank=True)
-    iban = models.CharField('Iban', max_length=255, null=True, blank=True)
-    banco = models.CharField('Banco', max_length=255, null=True, blank=True)
+    public_key = models.CharField('Clave publico', max_length=255, null=True,
+                                  blank=True)
+    secret_key = models.CharField('Plave privado', max_length=255, null=True,
+                                  blank=True)
     youtube = models.CharField('Video', max_length=255, null=True, blank=True)
     address = models.CharField('Direccion de Banco', max_length=255, null=True,
                                blank=True)
@@ -173,6 +175,8 @@ class Order(models.Model):
     comment = models.TextField('Comentario de cliente', null=True, blank=True)
     staff_comment = models.TextField('Comentario mio', null=True, blank=True)
     month = models.PositiveIntegerField('Meses', default=1)
+    payment_intent = models.CharField('Id de transferencia', max_length=255,
+                                      null=True, blank=True)
     created_at = models.DateTimeField(auto_now=True,
                                       verbose_name='Fecha de pedido')
     order_start = models.DateField(verbose_name='comenso de pedido',
@@ -187,7 +191,8 @@ class Order(models.Model):
         return reverse('order', kwargs={'id': self.id})
 
     def save(self, *args, **kwargs):
-        self.order_finish = self.order_start + datetime.timedelta(days=30*self.month)
+        print(f'data  {self.order_start}')
+        self.order_finish = datetime.datetime.strptime(self.order_start, '%Y-%m-%d') + datetime.timedelta(days=30*self.month)
         super().save(*args, **kwargs)
 
 

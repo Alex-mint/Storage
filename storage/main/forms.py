@@ -14,7 +14,7 @@ class OrderForm(forms.ModelForm):
         self.fields['order_date'].label = 'Дата получения заказа'
 
     order_date = forms.DateField(
-        widget=forms.TextInput(attrs={'type': 'date'}))
+        widget=forms.TextInput(attrs={'type': 'date', 'name': 'order_date'}))
 
     class Meta:
         model = Order

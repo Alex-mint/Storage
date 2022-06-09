@@ -12,7 +12,7 @@ from django.conf import settings
 from .forms import RegisterUserForm, LoginUserForm, OrderForm, AddImageForm, \
     StatusForm, PageInfo
 from .mixins import CartMixin
-from .models import Item, CartProduct, Customer, Order, Image, PageMessage
+from .models import Cart, Item, CartProduct, Customer, Order, Image, PageMessage
 from .utils import recalc_cart, send_message, get_map
 
 
@@ -62,6 +62,41 @@ class CartView(CartMixin, View):
                 'cart': self.cart,
             }
             return render(request, 'main/cart.html', context)
+        else:
+            send_message('login', request)
+            return redirect('home')
+
+
+class CartVueView(CartMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        cart_vue = []#Cart.objects.filter(id=self.cart.id).values()
+        items = []
+        for item in self.cart.products.all():
+            a = {
+                'id': item.item.id,
+                'title': item.item.title,
+                'price':item.item.price,
+                'qty': item.qty,
+                'final_price': item.final_price
+            }
+            items.append(a)
+        
+        cart_vue = {'items': items, 
+                    'month': self.cart.month, 
+                    'total': self.cart.final_price
+                    }
+        
+            #print(item.item.title)
+
+        if request.user.is_authenticated:
+            context = {
+                'storage': self.storage,
+                'cart': self.cart,
+                'cart_vue': cart_vue,
+            }
+            print(cart_vue)
+            return render(request, 'main/cart_vue.html', context)
         else:
             send_message('login', request)
             return redirect('home')

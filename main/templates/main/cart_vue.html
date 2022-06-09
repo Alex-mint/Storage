@@ -1,0 +1,148 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+{{ cart_vue|json_script:"cart_vue" }}
+
+{% if messages %}
+     {% for message in messages %}
+         <div class="container">
+             <div class="alert alert-success alert-dismissible fade show" role="alert">
+		             <center><h5>{{ message }}</h5></center>
+                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-lable="Close"></button>
+             </div>
+         </div>
+     {% endfor %}
+{% endif %}
+
+<div id="vue" class="cart-area pt-100 pb-100">
+    [[car]]
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                            <div class="cart-table-content">
+                                <div class="table-content table-responsive">
+                                    <table>
+                                        <thead>
+                                            <tr>
+		                                            <th class="width-thumbnail"></th>
+                                                <th class="width-thumbnail">{% trans 'Producto' %}</th>
+                                                <th class="width-price"> {% trans 'Pricio' %}</th>
+                                                <th class="width-quantity">{% trans 'Cantidad' %}</th>
+		                                            <th class="width-thumbnail">{% trans 'Actualizar precio' %}</th>
+                                                <th class="width-subtotal">Subtotal</th>
+                                                <th class="width-remove"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr  v-for='item in items' :key='item.id'>
+                                                <td class="product-thumbnail">
+                                                    <img src="{{ item.item.image.url }}" width="40px" alt="{{item.item.title}}">
+                                                </td>
+                                                <td class="product-name">
+                                                    <h5><a href="product-details.html">[[item.title]]</a></h5>
+                                                </td>
+                                                <td class="product-cart-price">
+                                                    <span class="amount">[[item.price]]€</span>
+                                                </td>
+                                                <td class="cart-quality">
+                                                    <h5><spann @click="lessItem(item.id)">-</spann> [[item.qty]] <span @click="addItem(item.id)">+</span></h5>
+                                                </td>
+                                                <td class="product-total">
+                                                    <span>[[item.final_price]]€</span>
+                                                </td>
+                                                <td class="product-remove">
+                                                    <a href="">
+                                                        <i class=" ti-trash "></i>
+                                                    </a>
+                                                </td>
+                                            </tr> 
+                                        </tbody>
+                                    </table>
+		                                <br>
+		                                <table>
+                                        <thead>
+                                            <tr>
+		                                            <td class="product-thumbnail"></td>
+                                                <th class="width-thumbnail"></th>
+                                                <th class="width-price"></th>
+                                                <th class="width-quantity"></th>
+                                                <th class="width-quantity"></th>
+		                                            <th class="width-thumbnail">{% trans 'Meses' %}</th>
+                                                <th class="width-subtotal">{% trans 'Aplicar' %}</th>
+                                                <th class="width-remove"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+
+
+                                            <tr>
+                                                <td class="product-thumbnail"></td>
+                                                <td class="product-thumbnail"></td>
+                                                <td class="product-name">
+                                                    <h5><spann @click="lessMonth()">-</spann> [[month]] <span @click="addMonth()">+</span></h5>
+                                                </td>
+                                                <td class="product-cart-price">
+                                                </td>
+                                                <td class="product-total"></td>
+		                                            <td class="cart-quality">
+		                                            <form action="{% url 'edit_months' id=cart.id %}" method="POST">
+                                                    {% csrf_token %}
+                                                     <input type="number" class="form-control" name="months" style="width: 70px;" min="1" value="{{ cart.month }}">
+		                                                  </td>
+		                                            <td class="cart-quality">
+                                                     <input type="submit" class="cart-clear btn-hover" value="{% trans 'Aplicar' %}">
+                                                    </form>
+		                                            </td
+
+
+
+                                                <td class="product-remove"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="product-thumbnail">
+                                                </td>
+                                                <td class="product-name">
+                                                </td>
+                                                <td class="product-cart-price"></td>
+                                                <td class="cart-quality">
+
+                                                </td>
+		                                            <td class="cart-quality"></td>
+                                                <td class="product-total"></td>
+                                                <td class="product-remove"><h5>Total:<strong> [[title]]€</strong></h5></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="cart-shiping-update-wrapper">
+                                        <div class="cart-shiping-update btn-hover">
+                                            <a href="{% url 'home' %}">&#x2190; {% trans 'Volver' %}</a>
+                                        </div>
+                                        <div class="cart-clear-wrap">
+                                            <div class="cart-clear btn-hover">
+                                                <a href="{% url 'checkout' %}">{% trans 'Continuar' %}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        
+
+        <script src="{% static 'js/vue.js' %}"></script>
+        
+        
+
+
+{% endblock content %}

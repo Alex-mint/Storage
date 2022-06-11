@@ -44,8 +44,12 @@
     <link rel="stylesheet" href="{% static 'assets/css/plugins/easyzoom.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/plugins/slinky.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/anime.scss' %}" />
 
+    <!-- Axios Vue Ajax-->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/vue@3.2.32/dist/vue.global.prod.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.4/gsap.min.js"></script>
 
 </head>
 
@@ -134,11 +138,11 @@
 
                                 <div class="header-action-style">
 		                                {% if request.user.is_authenticated %}
-                                    <a class="header-action-style" href="{% url 'cart-vue' %}"><i class="pe-7s-shopbag"></i>
+                                    <a class="header-action-style" href="{% url 'cart' %}"><i class="pe-7s-shopbag"></i>
                                         <span class="product-count bg-black">{{ cart.products.count }}</span>
                                     </a>
 		                                {% else %}
-		                                <a class="" href="{% url 'cart-vue' %}"><i class="pe-7s-shopbag"></i>
+		                                <a class="" href="{% url 'cart' %}"><i class="pe-7s-shopbag"></i>
                                         <span class="product-count bg-black"></span>
                                     </a>
 		                                {% endif %}

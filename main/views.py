@@ -1,3 +1,4 @@
+import json
 import stripe
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout, login
@@ -73,30 +74,29 @@ class CartVueView(CartMixin, View):
         cart_vue = []#Cart.objects.filter(id=self.cart.id).values()
         items = []
         for item in self.cart.products.all():
-            a = {
+            product = {
                 'id': item.item.id,
                 'title': item.item.title,
                 'price':item.item.price,
                 'qty': item.qty,
-                'final_price': item.final_price
+                'final_price': item.final_price,
+                'image': item.item.image.url
             }
-            items.append(a)
+            items.append(product)
         
-        cart_vue = {'items': items, 
-                    'month': self.cart.month, 
-                    'total': self.cart.final_price
-                    }
-        
-            #print(item.item.title)
+        cart_vue = {
+            'items': items, 
+            'month': self.cart.month, 
+            'total': self.cart.final_price
+        }
 
         if request.user.is_authenticated:
             context = {
                 'storage': self.storage,
-                'cart': self.cart,
                 'cart_vue': cart_vue,
             }
             print(cart_vue)
-            return render(request, 'main/cart_vue.html', context)
+            return render(request, 'main/cart.html', context)
         else:
             send_message('login', request)
             return redirect('home')
@@ -123,16 +123,44 @@ class AddToCartView(CartMixin, View):
 
 class DeleteFromCartView(CartMixin, View):
 
-    def get(self, request, *args, **kwargs):
-        item_slug = kwargs.get('slug')
-        item = Item.objects.get(slug=item_slug)
+    def post(self, request, *args, **kwargs):
+        item_pk = kwargs.get('pk')
+        item = Item.objects.get(pk=item_pk)
         cart_product = CartProduct.objects.get(
             user=self.cart.owner, cart=self.cart, item=item
         )
         self.cart.products.remove(cart_product)
         cart_product.delete()
         recalc_cart(self.cart)
-        return HttpResponseRedirect('/cart/')
+        return JsonResponse({'status': 204})
+
+
+class IncreaseQtyCartView(CartMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        item_pk = kwargs.get('pk')
+        item = Item.objects.get(pk=item_pk)
+        cart_product = CartProduct.objects.get(
+            user=self.cart.owner, cart=self.cart, item=item
+        )
+        cart_product.qty += 1
+        cart_product.save()
+        recalc_cart(self.cart)
+        return JsonResponse({'status': 204})
+
+
+class ReduceQtyCartView(CartMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        item_pk = kwargs.get('pk')
+        item = Item.objects.get(pk=item_pk)
+        cart_product = CartProduct.objects.get(
+            user=self.cart.owner, cart=self.cart, item=item
+        )
+        cart_product.qty -= 1
+        cart_product.save()
+        recalc_cart(self.cart)
+        return JsonResponse({'status': 204})
 
 
 class ChangeQTYView(CartMixin, View):
@@ -154,12 +182,12 @@ class ChangeQTYView(CartMixin, View):
 class ChangeMonthsView(CartMixin, View):
 
     def post(self, request, *args, **kwargs):
+        month = kwargs.get('month')
         cart = self.cart
-        cart.month = int(request.POST.get('months'))
+        cart.month = month
         cart.save()
         recalc_cart(cart)
-        send_message('update_price', request)
-        return HttpResponseRedirect('/cart/')
+        return JsonResponse({'status': 204})
 
 
 def edit_address(request):
@@ -310,7 +338,7 @@ class Checkout(CartMixin, View):
                 'customer': customer,
                 'cart': self.cart,
                 'form': form,
-                'pub_key': settings.STRIPE_API_KEY_PUBLIC
+                #'pub_key': settings.STRIPE_API_KEY_PUBLIC
             }
             return render(request, 'main/checkout.html', context)
         else:
@@ -458,4 +486,7 @@ class LoginUser(CartMixin, LoginView):
 def logout_user(request):
     logout(request)
     return redirect('home')
+
+
+
 

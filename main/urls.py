@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     path('', views.Home.as_view(), name='home'),
-    path('cart/', views.CartView.as_view(), name='cart'),
+    path('cart/', views.CartVueView.as_view(), name='cart'),
     path('cart-vue/', views.CartVueView.as_view(), name='cart-vue'),
     path('about-us/', views.AboutUs.as_view(), name='about_us'),
     path('contact-us/', views.ContactUs.as_view(), name='contact_us'),
@@ -27,6 +27,13 @@ urlpatterns = [
     path('pre-pay/', views.PrePay.as_view(), name='pre_pay'),
     path('edit-address/', views.edit_address, name='edit_address'),
     path('edit-account/', views.edit_account, name='edit_account'),
-    path('change-qty/<str:slug>/', views.ChangeQTYView.as_view(), name='change_qty'),
+
+    #path('change-qty/<str:slug>/', views.ChangeQTYView.as_view(), name='change_qty'),
+    
     path('remove-from-cart/<str:slug>/', views.DeleteFromCartView.as_view(), name='delete_from_cart'),
+    path('<int:pk>/car-item/delete/', views.DeleteFromCartView.as_view(), name='item_vuejs_delete'),
+    path('<int:pk>/car-item/increase-qty/', views.IncreaseQtyCartView.as_view(), name='increase_qty'),
+    path('<int:pk>/car-item/reduce-qty/', views.ReduceQtyCartView.as_view(), name='reduce_qty'),
+    path('<int:month>/car-month-qty/', views.ChangeMonthsView.as_view(), name='chang_month_qty'),
+    
 ]

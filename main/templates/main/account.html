@@ -2,8 +2,9 @@
 {% load static %}
 {% load i18n %}
 {% block content %}
+{{ customer_vue|json_script:"customer_vue" }}
 
-        {% if messages %}
+{% if messages %}
             {% for message in messages %}
                 <div class="container">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -15,7 +16,7 @@
             {% endfor %}
 				{% endif %}
 
-				<div class="my-account-wrapper pb-100 pt-100">
+				<div class="my-account-wrapper pb-100 pt-100" id='customer'>
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
@@ -86,39 +87,43 @@
                                             <div class="myaccount-content">
                                                 <h3>{% trans 'Dirección' %}</h3>
                                                 <address>
-                                                    <p><strong>{{ customer.user.username}}</strong></p>
+                                                    <p><strong>[[ userName ]]</strong></p>
 
-                                                    <p>{{ customer.city}}</p>
-                                                    <p>{{ customer.street}} {{ customer.number}}</p>
+                                                    <p>[[ city ]]</p>
+                                                    <p>[[ street ]] [[ number]]</p>
 
                                                 </address>
 
 
 		                                            <div class="mb-20">
-														                    <p class="cart-page-title"><a class="checkout-click1" href="#"><i class="fa fa-edit"></i>{% trans 'Editar Dirección' %}</a></p>
-														                    <div class="checkout-login-info">
+														<p class="cart-page-title"><a class="checkout-click1" href="#"><i class="fa fa-edit"></i>{% trans 'Editar Dirección' %}</a></p>
+														<div class="checkout-login-info">
                                                     <br>
-																                    <form action="{% url 'edit_address' %}" method="POST">
-										                                   {% csrf_token %}
-																				                <div class="sin-checkout-login">
-																                            <label>{% trans 'Ciudad' %} <abbr class="required" title="required">*</abbr></label>
-																                            <input class="form-control" name="city"  type="text" value="{{ customer.city }}">
-																                        </div>
-																												<div class="sin-checkout-login">
-																                            <label>{% trans 'Calle' %} <abbr class="required" title="required">*</abbr></label>
-																                            <input class="form-control" name="street"  type="text" value="{{ customer.street }}">
-																                        </div>
-																												<div class="sin-checkout-login">
-																                            <label>{% trans 'Numero' %} <abbr class="required" title="required">*</abbr></label>
-																                            <input class="form-control" name="number"  type="text" value="{{ customer.number }}">
-																                        </div>
-																		                    <div class="button-remember-wrap">
-														                                <button class="button" type="submit">{% trans 'Guardar' %}</button>
-														                            </div>
-										                                </form>
+														
+                                                <div>
+                                                    <form @submit="onSubmitAddress">
+                                                        <div class="sin-checkout-login">
+                                                            <label>{% trans 'Ciudad' %} <abbr class="required" title="required">*</abbr></label>
+                                                            <input v-model="customer.city"  class="form-control" name="city"  type="text" value="">
+                                                        </div>
+                                                                                <div class="sin-checkout-login">
+                                                            <label>{% trans 'Calle' %} <abbr class="required" title="required">*</abbr></label>
+                                                            <input v-model="customer.street"  class="form-control" name="street"  type="text" value="{{ customer.street }}">
+                                                        </div>
+                                                                                <div class="sin-checkout-login">
+                                                            <label>{% trans 'Numero' %} <abbr class="required" title="required">*</abbr></label>
+                                                            <input v-model="customer.number"  class="form-control" name="number"  type="text" value="{{ customer.number }}">
+                                                        </div>
+                                                            <div class="button-remember-wrap">
+                                                        <button class="button" type="submit">{% trans 'Guardar' %}</button>
+                                                    </div>
 
-														                    </div>
-														                </div>
+                                                    </form>
+                                                </div>
+
+												    </div>
+                                                    
+												</div>
 
                                             </div>
                                         </div>
@@ -128,12 +133,11 @@
 		                                        <div class="myaccount-content">
                                                 <h3>{% trans 'Detalles de su cuenta' %}</h3>
                                                 <address>
-                                                    <p><strong>{{ customer.user.username}}</strong></p>
+                                                    <p><strong>[[ userName ]]</strong></p>
 
-                                                    <p>{{ customer.first_name }}</p>
-                                                    <p>{{ customer.last_name }}</p>
-                                                    <p>{{ customer.phone }}</p>
-                                                    <p>{{ customer.email }}</p>
+                                                    <p>[[ customer.first_name ]] [[ customer.last_name ]]</p>
+                                                    <p>[[ customer.phone ]]</p>
+                                                    <p>[[ customer.email ]]</p>
 
                                                 </address>
 
@@ -142,33 +146,28 @@
 														                    <p class="cart-page-title"><a class="checkout-click1" href="#"><i class="fa fa-edit"></i> {% trans 'Editar su cuenta' %}</a></p>
 														                    <div class="checkout-login-info">
                                                     <br>
-																                    <form action="{% url 'edit_account' %}" method="POST">
-										                                   {% csrf_token %}
+                                                    <form @submit="onSubmitAccount">
+                                                        <div class="sin-checkout-login">
+													        <label>{% trans 'Nombre' %} <abbr class="required" title="required">*</abbr></label>
+													        <input v-model="customer.first_name" class="form-control" name="first_name"  type="text" >
+													    </div>
+														<div class="sin-checkout-login">
+													        <label>{% trans 'Apellidos' %} <abbr class="required" title="required">*</abbr></label>
+													        <input v-model="customer.last_name" class="form-control" name="last_name"  type="text" >
+													    </div>
+																				<div class="sin-checkout-login">
+													        <label>{% trans 'Telefono' %} <abbr class="required" title="required">*</abbr></label>
+													        <input v-model="customer.phone" class="form-control" name="phone"  type="text" >
+													    </div>
+													        <div class="sin-checkout-login">
+													        <label>Email <abbr class="required" title="required">*</abbr></label>
+													        <input v-model="customer.email" class="form-control" name="email"  type="text" >
+													    </div>
+                                                            <div class="button-remember-wrap">
+                                                        <button class="button" type="submit">{% trans 'Guardar' %}</button>
+                                                    </div>
 
-																				                <div class="sin-checkout-login">
-																                            <label>{% trans 'Nombre' %} <abbr class="required" title="required">*</abbr></label>
-																                            <input class="form-control" name="first_name"  type="text" value="{{ customer.first_name }}">
-																                        </div>
-																												<div class="sin-checkout-login">
-																                            <label>{% trans 'Apellidos' %} <abbr class="required" title="required">*</abbr></label>
-																                            <input class="form-control" name="last_name"  type="text" value="{{ customer.last_name }}">
-																                        </div>
-																												<div class="sin-checkout-login">
-																                            <label>{% trans 'Telefono' %} <abbr class="required" title="required">*</abbr></label>
-																                            <input class="form-control" name="phone"  type="text" value="{{ customer.phone }}">
-																                        </div>
-																		                    <div class="sin-checkout-login">
-																                            <label>Email <abbr class="required" title="required">*</abbr></label>
-																                            <input class="form-control" name="email"  type="text" value="{{ customer.email }}">
-																                        </div>
-																		                    <div class="button-remember-wrap">
-														                                <button class="button" type="submit">{% trans 'Guardar' %}</button>
-														                            </div>
-										                                </form>
-
-														                    </div>
-														                </div>
-
+                                                    </form>
                                             </div>
 
                                         </div> <!-- Single Tab Content End -->
@@ -181,5 +180,9 @@
             </div>
         </div>
         <!-- my account wrapper end -->
+        
+        
+
+        <script src="{% static 'js/account.js' %}"></script>
 
 {% endblock %}

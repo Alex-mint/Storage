@@ -1,5 +1,7 @@
 import json
+from django.forms import model_to_dict
 import stripe
+from django.core import serializers
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout, login
 from django.db import transaction
@@ -54,24 +56,10 @@ class ContactUs(CartMixin, View):
         return render(request, 'main/contact_us.html', context)
 
 
-class CartView(CartMixin, View):
-
-    def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            context = {
-                'storage': self.storage,
-                'cart': self.cart,
-            }
-            return render(request, 'main/cart.html', context)
-        else:
-            send_message('login', request)
-            return redirect('home')
-
-
 class CartVueView(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
-        cart_vue = []#Cart.objects.filter(id=self.cart.id).values()
+        cart_vue = []
         items = []
         for item in self.cart.products.all():
             product = {
@@ -95,10 +83,38 @@ class CartVueView(CartMixin, View):
                 'storage': self.storage,
                 'cart_vue': cart_vue,
             }
-            print(cart_vue)
             return render(request, 'main/cart.html', context)
         else:
             send_message('login', request)
+            return redirect('home')
+
+
+class AccountVueView(CartMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        
+        if request.user.is_authenticated:
+            customer = Customer.objects.get(user=request.user)
+            text = PageMessage.objects.filter(title='dashboad').first()
+            
+            context = {
+                'storage': self.storage,
+                'customer': customer,
+                'customer_vue': {
+                    'city': customer.city,
+                    'street': customer.street,
+                    'number': customer.number,
+                    'email': customer.email,
+                    'last_name': customer.last_name,
+                    'first_name': customer.first_name,
+                    'phone': customer.phone,
+                    'user_name': customer.user.username,
+                },
+                'cart': self.cart,
+                'text': text
+            }
+            return render(request, 'main/account.html', context)
+        else:
             return redirect('home')
 
 
@@ -192,31 +208,28 @@ class ChangeMonthsView(CartMixin, View):
 
 def edit_address(request):
     if request.user.is_authenticated:
-        if request.method == 'POST':
-            customer = Customer.objects.get(user=request.user)
-            customer.city = request.POST.get('city')
-            customer.street = request.POST.get('street')
-            customer.number = request.POST.get('number')
-            customer.save()
-            send_message('edit_address', request)
-            return redirect('account')
-        return render(request, 'main/account.html')
+        data = request.POST
+        customer = Customer.objects.get(user=request.user)
+        customer.city = data['city']
+        customer.street = data['street']
+        customer.number = data['number']
+        customer.save()
+        return JsonResponse({'data': 200})
     else:
         return redirect('home')
 
 
 def edit_account(request):
     if request.user.is_authenticated:
-        if request.method == 'POST':
-            customer = Customer.objects.get(user=request.user)
-            customer.first_name = request.POST.get('first_name')
-            customer.last_name = request.POST.get('last_name')
-            customer.phone = request.POST.get('phone')
-            customer.email = request.POST.get('email')
-            customer.save()
-            send_message('edit_account', request)
-            return redirect('account')
-        return render(request, 'main/account.html')
+        data = request.POST
+        customer = Customer.objects.get(user=request.user)
+        customer.first_name = data['first_name']
+        customer.last_name = data['last_name']
+        customer.phone = data['phone']
+        customer.email = data['email']
+        customer.save()
+        return JsonResponse({'data': 200})
+        
     else:
         return redirect('home')
 
@@ -257,22 +270,6 @@ def order_cancel(request, id):
     else:
         return redirect('home')
 
-
-class AccountView(CartMixin, View):
-
-    def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            customer = Customer.objects.get(user=request.user)
-            text = PageMessage.objects.filter(title='dashboad').first()
-            context = {
-                'storage': self.storage,
-                'customer': customer,
-                'cart': self.cart,
-                'text': text
-            }
-            return render(request, 'main/account.html', context)
-        else:
-            return redirect('home')
 
 
 class StaffView(CartMixin, View):

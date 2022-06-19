@@ -192,7 +192,8 @@ class Order(models.Model):
 
     def save(self, *args, **kwargs):
         print(f'data  {self.order_start}')
-        self.order_finish = datetime.datetime.strptime(self.order_start, '%Y-%m-%d') + datetime.timedelta(days=30*self.month)
+        if not self.order_finish:
+            self.order_finish = datetime.datetime.strptime(self.order_start, '%Y-%m-%d') + datetime.timedelta(days=30*self.month)
         super().save(*args, **kwargs)
 
 

@@ -13,7 +13,7 @@ const appVue = Vue.createApp({
             total: CartVue.total,
             items: CartVue.items,
             number: 0,
-            tweenedNumber: 0
+            tweenedNumber: Number(CartVue.total)
         }
     },
 
@@ -95,7 +95,7 @@ const appVue = Vue.createApp({
         },
 
     watch: {
-          number(newValue) {
+          cartPrice(newValue) {
             gsap.to(this.$data, { duration: 0.5, tweenedNumber: newValue })
           }
         }
